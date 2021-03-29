@@ -551,45 +551,45 @@
     border-radius: 16px;
 }
 
-/* Авторизация */
-.authorize-form__inner {
+/* Формы */
+.form__inner {
     width: 325px;
     margin: 0 auto;
 }
 
-.authorize-form__title {
+.form__title {
     font-size: 32px;
     font-weight: bold;
     margin: 0;
     padding: 55px 0 8px;
 }
 
-.authorize-form__input {
+.form__input {
     margin-top: 24px;
 }
 
-.authorize-form__actions {
+.form__actions {
     margin-right: -8px;
     margin-top: 24px;
     margin-bottom: 24px;
 }
 
-.authorize-form__action {
+.form__action {
     margin-right: 8px;
 }
 
-.authorize-form__link {
+.form__link {
     background: unset;
     color: #5F2EEA;
     transition: color ease-out 0.2s;
     padding: 0 8px 0 8px;
 }
 
-.authorize-form__link:hover {
+.form__link:hover {
     color: #2A00A2;
 }
 
-.authorize-form__popup {
+.form__popup {
     position: relative;
     padding: 16px 24px;
     width: 325px;
