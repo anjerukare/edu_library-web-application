@@ -10,9 +10,9 @@
     </head>
     <body class="page">
         <form class="signin-form" th:method="post" th:action="@{/signup}" th:object="${user}">
-            <div class="authorize-form__inner">
-                <h1 class="authorize-form__title">Регистрация</h1>
-                <div class="input authorize-form__input"
+            <div class="form__inner">
+                <h1 class="form__title">Регистрация</h1>
+                <div class="input form__input"
                      th:classappend="${#fields.hasErrors('username')? 'input_error' : ''}">
                     <input class="input__field input__field_contains_button-clear
                             input__field_contains_icon input__field_contains_label"
@@ -26,7 +26,7 @@
                     <div class="input__error-label" th:if="${#fields.hasErrors('username')}"
                          th:errors="*{username}"></div>
                 </div>
-                <div class="input authorize-form__input"
+                <div class="input form__input"
                      th:classappend="${#fields.hasErrors('password')? 'input_error' : ''}">
                     <input class="input__field input__field_contains_button-clear
                             input__field_contains_icon input__field_contains_label"
@@ -57,9 +57,9 @@
                         </label>
                     </div>
                 </div>
-                <div class="authorize-form__actions">
-                    <input class="button authorize-form__action" type="submit" value="Создать аккаунт"/>
-                    <a class="button button_subtle authorize-form__action" th:href="@{/books}">Вернуться</a>
+                <div class="form__actions">
+                    <input class="button form__action" type="submit" value="Создать аккаунт"/>
+                    <a class="button button_subtle form__action" th:href="@{/books}">Вернуться</a>
                 </div>
             </div>
         </form>
