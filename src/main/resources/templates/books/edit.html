@@ -21,9 +21,9 @@
                 <input type="text" th:field="*{author}" id="author"/>
             <div class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
             <p>
-                <label for="description">Введите описание книги</label>
-                <textarea th:field="*{description}" id="description"></textarea>
-            <div class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                <label for="annotation">Введите описание книги</label>
+                <textarea th:field="*{annotation}" id="annotation"></textarea>
+            <div class="error" th:if="${#fields.hasErrors('annotation')}" th:errors="*{annotation}"></div>
             <p>
                 <label for="cover-url">Введите ссылку на обложку книги</label>
                 <input type="text" th:field="*{coverUrl}" id="cover-url"/>
