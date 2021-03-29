@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8">
+        <title>Книги</title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+        <script src="/js/prevent-tooltips-if-invalid.js"></script>
+    </head>
+    <body class="page">
+        <header th:replace="fragments/header :: header">
+            /* Магия шаблонизатора */
+        </header>
+        <div class="body">
+            <section class="search"
+                     th:style="'background-position-y: -' + ${random % 1092} + 'px'">
+                <div class="search__inner">
+                    <div class="search__title">
+                        Ищете что-то конкретное?
+                    </div>
+                    <form class="search__form" th:method="get" th:action="@{/books/search}">
+                        <div class="input search__input">
+                            <input class="input__field input__field_contains_button-clear
+                            input__field_contains_icon input__field_contains_label"
+                                   type="text" name="q" placeholder="Поиск" required/>
+                            <button class="input__button-clear" type="button" tabindex="-1"
+                                    onclick="this.previousElementSibling.value = ''"></button>
+                            <img class="icon input__icon" src="/img/search.png"/>
+                            <label class="input__label">Поиск</label>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section class="books">
+                <div class="books__inner">
+                    <h2 class="books__title">
+                        Книги
+                        <a class="button button_icon button_secondary books__add-book" th:href="@{/books/new}"
+                           sec:authorize="hasAnyRole('ROLE_WRITER', 'ROLE_ADMIN')">
+                            <img class="button__icon" src="/img/add.png"/>
+                        </a>
+                    </h2>
+                    <ul class="books-catalog">
+                        <li class="book-card" th:each="book : ${books}">
+                            <a class="book-card__link"
+                               th:href="@{/books/{id}(id=${book.getId()})}"
+                               tabindex="-1">
+                                <img class="book-card__cover"
+                                     th:src="@{{coverUrl}(coverUrl=${book.getCoverUrl()})}"
+                                     onerror="this.src='/img/null-cover.png'"/>
+                            </a>
+                            <div class="book-card__description">
+                                <a class="link book-card__title"
+                                   th:href="@{/books/{id}(id=${book.getId()})}"
+                                   th:text="${book.getName()}">
+                                </a>
+                                <span class="book-card__author"
+                                      th:text="${book.getAuthor()}">
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

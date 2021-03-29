@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Вход</title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+        <script src="/js/prevent-tooltips-if-invalid.js"></script>
+    </head>
+    <body class="page">
+        <form class="signin-form" th:method="post" th:action="@{/signin}">
+            <div class="authorize-form__inner">
+                <h1 class="authorize-form__title">Вход</h1>
+                <div class="input authorize-form__input">
+                    <input class="input__field input__field_contains_button-clear
+                    input__field_contains_icon input__field_contains_label"
+                           type="text" name="username" placeholder="Имя пользователя"
+                           required autofocus/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <img class="input__icon" src="/img/user.png"/>
+                    <label class="input__label">Имя пользователя</label>
+                </div>
+                <div class="input authorize-form__input">
+                    <input class="input__field input__field_contains_button-clear
+                    input__field_contains_icon input__field_contains_label"
+                           type="password" name="password" placeholder="Пароль" required/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <img class="input__icon" src="/img/lock.png"/>
+                    <label class="input__label">Пароль</label>
+                </div>
+                <div class="authorize-form__actions">
+                    <input class="button authorize-form__action" type="submit" value="Войти"/>
+                    <a class="button button_subtle authorize-form__action" th:href="@{/books}">Вернуться</a>
+                </div>
+                <div class="registration-invite">
+                    Впервые у нас?
+                    <a class="link authorize-form__link" th:href="@{/signup}">Зарегистрироваться</a>
+                </div>
+                <div class="error-popup" th:if="${param.error != null}">
+                    <input class="popup-checkbox" type="checkbox" id="popup-userinfo" checked/>
+                    <div class="popup authorize-form__popup">
+                        <span class="popup__header">Неверные учетные данные</span>
+                        <label for="popup-userinfo">
+                            <img class="icon popup__button-close" src="/img/close.png"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

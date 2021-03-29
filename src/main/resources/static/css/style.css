@@ -1,0 +1,706 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+/* Страница */
+.page {
+    background: #FCFCFC;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #14142B;
+}
+
+/* Шапка сайта */
+.header {
+
+}
+
+.header__inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 54px;
+    width: 1192px;
+    margin: 0 auto;
+    padding: 0 52px;
+}
+
+.header__logo {
+    position: relative;
+    bottom: 2px;
+}
+
+.header__user-info {
+    position: relative;
+}
+
+/* Блок пользователя */
+.user {
+    display: flex;
+}
+
+.user__name {
+    line-height: normal;
+}
+
+/* Ссылка */
+.link {
+    cursor: pointer;
+    text-decoration: none;
+    color: initial;
+    font-weight: 600;
+}
+
+/* Чекбокс для всплывающего окна */
+.popup-checkbox {
+    display: none;
+}
+
+.popup-checkbox:checked ~ .popup {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+}
+
+.popup-checkbox:checked ~ .popup-trigger .popup-trigger__icon {
+    transform: rotate(-180deg);
+}
+
+/* Кнопка активации всплывающего окна */
+.popup-trigger {
+
+}
+
+.popup-trigger__icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 24px;
+    height: 24px;
+    transition: ease-out transform 0.2s;
+}
+
+/* Всплывающее окно */
+.popup {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0s linear 0.2s;
+}
+
+.popup__closing-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.popup__menu {
+    position: absolute;
+    top: 55px;
+    right: -9px;
+    background: #FCFCFC;
+    box-shadow: 0 8px 16px rgba(17, 17, 17, 0.04);
+    width: 164px;
+    border-radius: 8px;
+}
+
+.popup__header {
+    font-weight: 600;
+}
+
+.popup__button-close {
+    position: absolute;
+    top: 21px;
+    right: 24px;
+    filter: invert(100%) sepia(48%) saturate(0%) hue-rotate(121deg) brightness(105%) contrast(98%);
+    cursor: pointer;
+}
+
+.menu__link {
+    border: inherit;
+    padding: inherit;
+    font-size: inherit;
+    background: inherit;
+    font-weight: normal;
+    outline: none;
+}
+
+.menu__link:hover {
+    background: #F7F7FC;
+}
+
+.menu__link:focus {
+    background: #F7F7FC;
+}
+
+.menu__item {
+    display: block;
+    padding: 12px 20px;
+    width: 100%;
+    text-align: inherit;
+}
+
+.menu__item:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.menu__item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.menu__separator {
+    margin: 4px 20px;
+    background: #D9DBE9;
+    height: 1px;
+}
+
+.username {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.role {
+    color: #6E7191;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Триггер всплывающего окна */
+.popup-trigger {
+    cursor: pointer;
+    text-decoration: none;
+    color: initial;
+    font-weight: 600;
+}
+
+/* Тело страницы */
+.body {}
+
+/* Секция "Поиск" */
+.search {
+    background: url("/img/pattern.png") #F7F7FC;
+    background-size: cover;
+}
+
+.search__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 1192px;
+    margin: 0 auto;
+    padding: 55px 52px;
+}
+
+.search__title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+}
+
+.search__form {
+    position: relative;
+    margin: auto;
+}
+
+.search__input {
+    width: 538px;
+}
+
+/* Кнопка */
+.button {
+    cursor: pointer;
+    color: #f7f7fc;
+    padding: 10px 30px;
+    min-width: 120px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    background: #5F2EEA;
+    border: none;
+    border-radius: 40px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all ease-out 0.2s;
+}
+
+.button:hover {
+    background: #2A00A2;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.09);
+}
+
+.button:focus {
+    box-shadow: 0 0 0 8px #E4DAFF;
+    outline: none;
+}
+
+.button_secondary {
+    color: #5F2EEA;
+    background: unset;
+    border: solid 2px #5F2EEA;
+    padding: 8px 28px;
+}
+
+.button_secondary:hover {
+    background: inherit;
+    box-shadow: inherit;
+    border-color: #2A00A2;
+}
+
+.button_subtle {
+    color: #5F2EEA;
+    background: unset;
+    border: solid 2px #D9DBE9;
+    padding: 8px 28px;
+}
+
+.button_subtle:hover {
+    background: inherit;
+    box-shadow: inherit;
+    color: #2A00A2;
+}
+
+.button_subtle:focus {
+    box-shadow: 0 0 0 8px #EFF0F6;
+    outline: none;
+}
+
+.button_icon {
+    min-width: unset;
+    display: inline-block;
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* Иконка */
+.icon {
+    display: block;
+}
+
+/* Поле ввода */
+.input {
+    position: relative;
+}
+
+.input__field {
+    width: 100%;
+    font-family: inherit;
+    background: #EFF0F6;
+    font-size: 16px;
+    padding: 17px 25px 17px 24px;
+    border: none;
+    border-radius: 16px;
+}
+
+.input__field:required {
+    box-shadow: none;
+}
+
+.input__field:focus {
+    background: #FCFCFC;
+    outline: none;
+    padding: 15px 23px 15px 22px;
+    border: solid 2px #5F2EEA;
+}
+
+.input__button-clear {
+    cursor: text;
+    border: none;
+    outline: none;
+    position: absolute;
+    right: 22px;
+    top: 21px;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    background: url("/img/close.png");
+    filter: invert(68%) sepia(20%) saturate(266%) hue-rotate(196deg) brightness(93%) contrast(94%);
+    opacity: 0;
+    overflow: hidden;
+}
+
+.input__label {
+    z-index: -1;
+    opacity: 0;
+    overflow: hidden;
+    color: #6E7191;
+    position: absolute;
+    top: 17px;
+    left: 24px;
+}
+
+.input__icon {
+    filter: invert(0%) sepia(51%) saturate(7109%) hue-rotate(141deg) brightness(75%) contrast(87%);
+    position: absolute;
+    top: 17px;
+    left: 25px;
+}
+
+.input__field_contains_button-clear:focus ~ .input__button-clear {
+    cursor: pointer;
+    overflow: visible;
+    opacity: 1;
+}
+
+.input__field_contains_icon ~ .input__label {
+    left: 64px;
+}
+
+.input__field:valid ~ .input__label {
+    z-index: auto;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    overflow: visible;
+    transition: ease top 70ms;
+    top: 4px;
+}
+
+.input__field_contains_icon {
+    padding-left: 64px;
+}
+
+.input__field_contains_icon:focus {
+    padding-left: 62px;
+}
+
+.input__field_contains_label:not(:focus):valid {
+    padding-top: 28px;
+    padding-right: 25px;
+    padding-bottom: 6px;
+}
+
+.input__field_contains_label:valid {
+    padding-top: 26px;
+    padding-right: 23px;
+    padding-bottom: 4px;
+}
+
+.input__field_contains_button-clear:not(:focus):valid {
+    padding-right: 57px;
+}
+
+.input__field_contains_button-clear:valid {
+    padding-right: 55px;
+}
+
+.input__field::placeholder {
+    color: #A0A3BD;
+}
+
+.input_error > .input__field {
+    background: #FFF3F8;
+}
+
+.input_error > .input__field:focus {
+    border-color: #ED2E7E;
+}
+
+.input_error > .input__icon {
+    filter: invert(24%) sepia(70%) saturate(3322%) hue-rotate(320deg) brightness(99%) contrast(87%);
+}
+
+.input_error > .input__button-clear {
+    filter: invert(24%) sepia(70%) saturate(3322%) hue-rotate(320deg) brightness(99%) contrast(87%);
+}
+
+.input_error > .input__label {
+    color: #C30052;
+}
+
+.input__error-label {
+    margin-top: 9px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #C30052;
+}
+
+.input_error > .input__field::placeholder {
+    color: hsl(335, 100%, 78%);
+}
+
+/* Раздел "Книги" */
+.books {}
+
+.books__inner {
+    width: 1192px;
+    margin: 0 auto;
+    padding: 0 52px 48px;
+}
+
+.books__title {
+    font-size: 32px;
+    padding: 40px 0 32px 0;
+}
+
+.books__add-book {
+    position: relative;
+    top: 2px;
+    margin-left: 8px;
+}
+
+/* Каталог книг */
+.books-catalog {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 236px);
+    grid-column-gap: 48px;
+    grid-row-gap: 48px;
+}
+
+/* Карточка книги */
+.book-card {
+    border-radius: 16px;
+    width: 236px;
+    box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+    height: 422px;
+}
+
+.book-card__link {}
+
+.book-card__cover {
+    width: 236px;
+    height: 335px;
+    object-fit: cover;
+    box-sizing: border-box;
+    border: 1px solid rgba(95, 46, 234, 0.1);
+    border-radius: 16px 16px 0 0;
+}
+
+.book-card__cover_large {
+    border-radius: 16px;
+}
+
+.book-card__description {
+    padding: 14px 24px;
+}
+
+.book-card__description_large {
+    padding: 0;
+    margin: 8px 0 0 48px;
+}
+
+.book-card__title {
+    font-weight: bold;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+}
+
+.book-card__title_large {
+    font-size: 20px;
+}
+
+.book-card__author {
+    color: #6E7191;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+}
+
+.book-card__annotation {
+    margin-top: 16px;
+    width: 512px;
+}
+
+.book-card__actions {
+    margin-top: 16px;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.book-card__action {
+    margin-right: 8px;
+}
+
+.book-card_large {
+    display: flex;
+    flex-flow: row nowrap;
+    box-shadow: unset;
+    height: unset;
+}
+
+/* Раздел "Книга" */
+.book {}
+
+.book__background {
+    height: 232px;
+    background: url("/img/pattern.png") #F7F7FC;
+    background-size: cover;
+}
+
+.book__inner {
+    position: relative;
+    bottom: 113px;
+    width: 1088px;
+    background: #FCFCFC;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 16px;
+}
+
+/* Авторизация */
+.authorize-form__inner {
+    width: 325px;
+    margin: 0 auto;
+}
+
+.authorize-form__title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+    padding: 55px 0 8px;
+}
+
+.authorize-form__input {
+    margin-top: 24px;
+}
+
+.authorize-form__actions {
+    margin-right: -8px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.authorize-form__action {
+    margin-right: 8px;
+}
+
+.authorize-form__link {
+    background: unset;
+    color: #5F2EEA;
+    transition: color ease-out 0.2s;
+    padding: 0 8px 0 8px;
+}
+
+.authorize-form__link:hover {
+    color: #2A00A2;
+}
+
+.authorize-form__popup {
+    position: relative;
+    padding: 16px 24px;
+    width: 325px;
+    background: #ED2E7E;
+    color: #FCFCFC;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.error-popup {
+    position: absolute;
+    bottom: 24px;
+}
+
+.radio-group {
+    margin-top: 18px;
+}
+
+.radio-group__header {
+    color: #6E7191;
+}
+
+.radio-group__inner {
+    display: flex;
+    padding-top: 8px;
+}
+
+.radio {
+    cursor: pointer;
+    position: relative;
+    padding-left: 24px;
+    font-weight: 600;
+}
+
+.radio__button {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background: #D9DBE9;
+    border-radius: 50%;
+    transition: box-shadow ease-out 0.2s;
+}
+
+.radio__radio:hover ~ .radio__button {
+    background: #A0A3BD;
+}
+
+.radio__radio:checked:hover ~ .radio__button {
+    background: #2A00A2;
+}
+
+.radio__radio:focus ~ .radio__button {
+    box-shadow: 0 0 0 4px #eff0f6;
+}
+
+.radio__radio:checked:focus ~ .radio__button {
+    box-shadow: 0 0 0 4px #e4daff;
+}
+
+.radio__button::after {
+    content: "";
+    position: absolute;
+    display: none;
+    width: 8px;
+    height: 8px;
+    top: 4px;
+    left: 4px;
+    border-radius: 50%;
+    background: #F7F7FC;
+}
+
+.radio__radio {
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.radio__radio:checked ~ .radio__button {
+    background: #5F2EEA;
+}
+
+.radio__radio:checked ~ .radio__button::after {
+    display: block;
+}
+
+form textarea {
+    max-width: 20rem;
+    max-height: 10rem;
+    min-width: 9rem;
+    min-height: 3rem;
+}
+
+input, textarea {
+    font-family: inherit;
+    font-size: 14px;
+}
+
+form .error {
+    color: #e74c3c;
+}
+
+form .note {
+    margin: 0.3rem 0;
+    font-size: 0.8rem;
+    display: block;
+    color: dimgrey;
+}
+
+.radio-inline {
+    display: inline;
+}

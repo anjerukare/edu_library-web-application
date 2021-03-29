@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8">
+        <title>Header</title>
+    </head>
+    <body>
+        <header class="header" th:fragment="header">
+            <div class="header__inner">
+                <a class="logo header__logo" th:href="@{/books}">
+                    <img src="/img/logo.png"/>
+                </a>
+                <div class="header__user-info" sec:authorize="isAuthenticated()">
+                    <input class="popup-checkbox" type="checkbox" id="popup-userinfo"/>
+                    <label class="user popup-trigger" for="popup-userinfo">
+                        <span class="user__name" sec:authentication="name"></span>
+                        <div class="popup-trigger__icon">
+                            <img class="icon"
+                                 src="/img/caret-down.png"/>
+                        </div>
+                    </label>
+                    <div class="popup">
+                        <label class="popup__closing-overlay" for="popup-userinfo"></label>
+                        <div class="menu popup__menu">
+                            <div class="menu__item">
+                                <div class="username" sec:authentication="name"></div>
+                                <div class="role">
+                                    <span sec:authorize="hasRole('ROLE_READER')">Читатель</span>
+                                    <span sec:authorize="hasRole('ROLE_WRITER')">Писатель</span>
+                                    <span sec:authorize="hasRole('ROLE_ADMIN')">Администратор</span>
+                                </div>
+                            </div>
+                            <div class="menu__separator"></div>
+                            <form th:method="post" th:action="@{/signout}">
+                                <input class="link menu__link menu__item" type="submit"
+                                       value="Выйти">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="header__user-info" sec:authorize="!isAuthenticated()">
+                    <a class="link" th:href="@{/signin}">Войти</a>
+                </div>
+            </div>
+        </header>
+    </body>
+</html>
