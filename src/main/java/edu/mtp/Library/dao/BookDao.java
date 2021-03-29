@@ -24,7 +24,7 @@ public class BookDao {
 
     public void add(Book book) {
         jdbcTemplate.update("insert into books(name, author, description, coverurl) values(?, ?, ?, ?)",
-                book.getName(), book.getAuthor(), book.getDescription(), book.getCoverUrl());
+                book.getName(), book.getAuthor(), book.getAnnotation(), book.getCoverUrl());
     }
 
     public Book get(int id) {
@@ -40,7 +40,7 @@ public class BookDao {
 
     public void set(int id, Book book) {
         jdbcTemplate.update("update books set name = ?, author = ?, description = ?, coverurl = ? " +
-                "where id = ?", book.getName(), book.getAuthor(), book.getDescription(), book.getCoverUrl(), id);
+                "where id = ?", book.getName(), book.getAuthor(), book.getAnnotation(), book.getCoverUrl(), id);
     }
 
     public void delete(int id) {

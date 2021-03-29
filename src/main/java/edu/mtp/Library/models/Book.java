@@ -12,7 +12,7 @@ public class Book {
     private String author;
 
     @Size(min = 8, max = 512, message = "Поле \"Описание\" должно иметь от 8 до 512 символов")
-    private String description;
+    private String annotation;
 
     private String coverUrl;
 
@@ -48,11 +48,11 @@ public class Book {
         this.author = author;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAnnotation() {
+        return annotation;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
     }
 }
