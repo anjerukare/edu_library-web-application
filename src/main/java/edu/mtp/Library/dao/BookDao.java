@@ -23,7 +23,7 @@ public class BookDao {
     }
 
     public void add(Book book) {
-        jdbcTemplate.update("insert into books(name, author, description, coverurl) values(?, ?, ?, ?)",
+        jdbcTemplate.update("insert into books(name, author, annotation, coverurl) values(?, ?, ?, ?)",
                 book.getName(), book.getAuthor(), book.getAnnotation(), book.getCoverUrl());
     }
 
@@ -39,7 +39,7 @@ public class BookDao {
     }
 
     public void set(int id, Book book) {
-        jdbcTemplate.update("update books set name = ?, author = ?, description = ?, coverurl = ? " +
+        jdbcTemplate.update("update books set name = ?, author = ?, annotation = ?, coverurl = ? " +
                 "where id = ?", book.getName(), book.getAuthor(), book.getAnnotation(), book.getCoverUrl(), id);
     }
 
