@@ -6,10 +6,9 @@
         <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
         <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
-        <script src="/js/prevent-tooltips-if-invalid.js"></script>
     </head>
     <body class="page">
-        <form class="signin-form" th:method="post" th:action="@{/signin}">
+        <form class="signin-form" th:method="post" th:action="@{/signin}" novalidate>
             <div class="form__inner">
                 <h1 class="form__title">Вход</h1>
                 <div class="input form__input">

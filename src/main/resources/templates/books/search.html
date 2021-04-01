@@ -7,7 +7,6 @@
         <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
         <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
-        <script src="/js/prevent-tooltips-if-invalid.js"></script>
     </head>
     <body class="page">
         <header th:replace="fragments/header :: header">
@@ -20,7 +19,7 @@
                     <div class="search__title">
                         Результаты поиска по запросу
                     </div>
-                    <form class="search__form" th:method="get" th:action="@{/books/search}">
+                    <form class="search__form" th:method="get" th:action="@{/books/search}" novalidate>
                         <div class="input search__input">
                             <input class="input__field input__field_contains_button-clear
                                    input__field_contains_icon input__field_contains_label"
