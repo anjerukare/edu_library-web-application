@@ -92,7 +92,7 @@ public class BookController {
         }
 
         bookDao.set(id, book);
-        return "redirect:/books";
+        return "redirect:/books/{id}";
     }
 
     @DeleteMapping("/{id}")
