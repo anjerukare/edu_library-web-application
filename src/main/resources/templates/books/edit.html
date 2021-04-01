@@ -7,29 +7,71 @@
         <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
     </head>
-    <body>
-        <header th:replace="fragments/header :: header">
-            /* Магия шаблонизатора */
-        </header>
-        <form th:method="patch" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
-            <p>
-                <label for="name">Введите название книги</label>
-                <input type="text" th:field="*{name}" id="name"/>
-            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-            <p>
-                <label for="author">Введите автора книги</label>
-                <input type="text" th:field="*{author}" id="author"/>
-            <div class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
-            <p>
-                <label for="annotation">Введите описание книги</label>
-                <textarea th:field="*{annotation}" id="annotation"></textarea>
-            <div class="error" th:if="${#fields.hasErrors('annotation')}" th:errors="*{annotation}"></div>
-            <p>
-                <label for="cover-url">Введите ссылку на обложку книги</label>
-                <input type="text" th:field="*{coverUrl}" id="cover-url"/>
-                <span class="note">Поле можно оставить пустым</span>
-            </p>
-            <input type="submit" value="Изменить"/>
+    <body class="page">
+        <form class="add-book-form" th:method="patch" th:action="@{/books/{id}(id=${book.getId()})}"
+              th:object="${book}" novalidate>
+            <div class="form__inner">
+                <h1 class="form__title">Книги</h1>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('name')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                          input__field_contains_label"
+                           type="text" name="name" placeholder="Название книги"
+                           th:field="*{name}" required autofocus/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Название книги</label>
+                    <div class="input__error-label" th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}"></div>
+                </div>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('author')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                          input__field_contains_label"
+                           type="text" name="author" placeholder="Автор книги"
+                           th:field="*{author}" required/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Автор книги</label>
+                    <div class="input__error-label" th:if="${#fields.hasErrors('author')}"
+                         th:errors="*{author}"></div>
+                </div>
+                <div class="text-area form__text-area"
+                     th:classappend="${#fields.hasErrors('annotation')? 'text-area_error' : ''}">
+                    <div class="text-area__inner">
+                        <div class="text-area__resize-handle">
+                            <img class="text-area__resizer" src="/img/resizer.png"/>
+                        </div>
+                        <textarea class="text-area__field text-area__field_contains_button-clear
+                                                 text-area__field_contains_label"
+                                  name="annotation" placeholder="Описание книги"
+                                  th:field="*{annotation}" required></textarea>
+                        <button class="text-area__button-clear" type="button" tabindex="-1"
+                                onclick="this.previousElementSibling.value = ''; this.blur()"></button>
+                        <div class="text-area__header">
+                            <label class="text-area__label">Описание книги</label>
+                        </div>
+                    </div>
+                    <div class="text-area__error-label" th:if="${#fields.hasErrors('annotation')}"
+                         th:errors="*{annotation}"></div>
+                </div>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('coverUrl')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                          input__field_contains_label"
+                           type="text" name="coverUrl" placeholder="Ссылка на обложку"
+                           th:field="*{coverUrl}" required/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Ссылка на обложку</label>
+                    <div class="input__error-label" th:if="${#fields.hasErrors('coverUrl')}"
+                         th:errors="*{coverUrl}"></div>
+                </div>
+                <div class="form__actions">
+                    <input class="button form__action" type="submit" value="Изменить"/>
+                    <a class="button button_subtle form__action" th:href="@{/books/{id}(id=${book.getId()})}">Отмена</a>
+                </div>
+            </div>
         </form>
     </body>
 </html>
