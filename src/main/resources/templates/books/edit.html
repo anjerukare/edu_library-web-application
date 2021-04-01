@@ -58,7 +58,7 @@
                 <div class="input form__input"
                      th:classappend="${#fields.hasErrors('coverUrl')? 'input_error' : ''}">
                     <input class="input__field input__field_contains_button-clear
-                                          input__field_contains_label"
+                                  input__field_contains_label"
                            type="text" name="coverUrl" placeholder="Ссылка на обложку"
                            th:field="*{coverUrl}" required/>
                     <button class="input__button-clear" type="button" tabindex="-1"
@@ -66,6 +66,7 @@
                     <label class="input__label">Ссылка на обложку</label>
                     <div class="input__error-label" th:if="${#fields.hasErrors('coverUrl')}"
                          th:errors="*{coverUrl}"></div>
+                    <div class="input__note-label">Поле можно оставить пустым</div>
                 </div>
                 <div class="form__actions">
                     <input class="button form__action" type="submit" value="Изменить"/>
