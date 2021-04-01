@@ -14,7 +14,8 @@
             /* Магия шаблонизатора */
         </header>
         <div class="body">
-            <section class="search">
+            <section class="search"
+                     th:style="'background-position-y: -' + ${random % 1092} + 'px'">
                 <div class="search__inner">
                     <div class="search__title">
                         Результаты поиска по запросу
@@ -42,14 +43,16 @@
                         </a>
                     </h2>
                     <ul class="books-catalog">
-                        <li class="book-card book-card_compact" th:each="book : ${books}">
-                            <a class="book-card__link" th:href="@{/books/{id}(id=${book.getId()})}">
-                                <img class="book-card__cover book-card__cover_compact"
+                        <li class="book-card" th:each="book : ${books}">
+                            <a class="book-card__link"
+                               th:href="@{/books/{id}(id=${book.getId()})}"
+                               tabindex="-1">
+                                <img class="book-card__cover"
                                      th:src="@{{coverUrl}(coverUrl=${book.getCoverUrl()})}"
                                      onerror="this.src='/img/null-cover.png'"/>
                             </a>
-                            <div class="book-card__description book-card__description_compact">
-                                <a class="link book-card__title book-card__title_compact"
+                            <div class="book-card__description">
+                                <a class="link book-card__title"
                                    th:href="@{/books/{id}(id=${book.getId()})}"
                                    th:text="${book.getName()}">
                                 </a>

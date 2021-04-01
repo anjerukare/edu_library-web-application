@@ -53,6 +53,7 @@ public class BookController {
         List<Book> books = bookDao.getByNameOrAuthor(query);
         books.sort(Comparator.comparing(Book::getName));
         model.addAttribute("books", books);
+        model.addAttribute("random", abs(random.nextInt()));
         model.addAttribute("q", query);
         return "books/search";
     }
