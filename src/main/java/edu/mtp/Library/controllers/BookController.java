@@ -48,7 +48,7 @@ public class BookController {
     public String searchBooks(@RequestParam("q") String query,
                               Model model) {
         if (query.equals(""))
-            return "books/index";
+            return "redirect:/books";
 
         List<Book> books = bookDao.getByNameOrAuthor(query);
         books.sort(Comparator.comparing(Book::getName));
