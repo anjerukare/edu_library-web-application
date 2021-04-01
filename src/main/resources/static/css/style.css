@@ -850,17 +850,6 @@
     display: block;
 }
 
-form .error {
-    color: #e74c3c;
-}
-
-form .note {
-    margin: 0.3rem 0;
-    font-size: 0.8rem;
-    display: block;
-    color: dimgrey;
-}
-
 .radio-inline {
     display: inline;
 }
