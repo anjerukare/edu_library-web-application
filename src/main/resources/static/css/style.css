@@ -183,38 +183,6 @@
 /* Тело страницы */
 .body {}
 
-/* Секция "Поиск" */
-.search {
-    background: url("/img/pattern.png") #F7F7FC;
-    background-size: cover;
-}
-
-.search__inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 1192px;
-    margin: 0 auto;
-    padding: 55px 52px;
-}
-
-.search__title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 32px;
-}
-
-.search__form {
-    position: relative;
-    margin: auto;
-}
-
-.search__input {
-    width: 538px;
-}
-
 /* Кнопка */
 .button {
     cursor: pointer;
@@ -288,6 +256,7 @@
 /* Поле ввода */
 .input {
     position: relative;
+    width: 325px;
 }
 
 .input__field {
@@ -425,6 +394,197 @@
 
 .input_error > .input__field::placeholder {
     color: hsl(335, 100%, 78%);
+}
+
+/* Область для ввода текста */
+.text-area {
+    width: 442px;
+}
+
+.text-area__inner {
+    position: relative;
+    background: #EFF0F6;
+    border-radius: 16px;
+    padding: 2px 2px 2px 24px;
+}
+
+.text-area__inner:focus-within {
+    background: #FCFCFC;
+    border: solid 2px #5F2EEA;
+    padding: 0 0 0 22px;
+}
+
+.text-area__resize-handle {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: #EFF0F6;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    border-radius: 0 0 16px 0;
+}
+
+.text-area__inner:focus-within > .text-area__resize-handle {
+    background: #FCFCFC;
+    bottom: -2px;
+    right: -2px;
+    border-right: 2px solid #5F2EEA;
+    border-bottom: 2px solid #5F2EEA;
+}
+
+.text-area__resizer {
+    filter: invert(68%) sepia(20%) saturate(266%) hue-rotate(196deg) brightness(93%) contrast(94%);
+}
+
+.text-area__field {
+    resize: vertical;
+    width: 100%;
+    font-family: inherit;
+    background: transparent;
+    font-size: 16px;
+    padding: 0 25px 8px 0;
+    margin: 0;
+    border: none;
+    border-top: 20px solid transparent;
+    border-radius: 16px;
+    min-height: 147px;
+    max-height: 256px;
+}
+
+.text-area__field:required {
+    box-shadow: none;
+}
+
+.text-area__field:focus {
+    outline: none;
+}
+
+.text-area__button-clear {
+    cursor: text;
+    border: none;
+    outline: none;
+    position: absolute;
+    right: 25px;
+    top: 18px;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    background: url("/img/close.png");
+    filter: invert(68%) sepia(20%) saturate(266%) hue-rotate(196deg) brightness(93%) contrast(94%);
+    opacity: 0;
+    overflow: hidden;
+}
+
+.text-area__header {
+    background: transparent;
+    position: absolute;
+    top: 0;
+}
+
+.text-area__inner:focus-within > .text-area__header {
+    top: -2px;
+}
+
+.text-area__label {
+    z-index: -1;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #6E7191;
+    position: absolute;
+    top: 22px;
+}
+
+.text-area__field_contains_button-clear:focus ~ .text-area__button-clear {
+    cursor: pointer;
+    overflow: visible;
+    opacity: 1;
+}
+
+.text-area__field_contains_label:valid ~ .text-area__header > .text-area__label {
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 0;
+    opacity: 1;
+    overflow: visible;
+    transition: ease top 70ms;
+    top: 16px;
+}
+
+.text-area__field_contains_label:valid {
+    border-top: 36px solid transparent;
+}
+
+.text-area__field::placeholder {
+    color: #A0A3BD;
+}
+
+.text-area_error > .text-area__inner {
+    background: #FFF3F8;
+}
+
+.text-area_error > .text-area__inner > .text-area__resize-handle {
+    background: #FFF3F8;
+}
+
+.text-area_error > .text-area__inner:focus-within {
+    border-color: #ED2E7E;
+}
+
+.text-area_error > .text-area__inner:focus-within > .text-area__resize-handle {
+    border-color: #ED2E7E;
+}
+
+.text-area_error > .text-area__inner > .text-area__button-clear {
+    filter: invert(24%) sepia(70%) saturate(3322%) hue-rotate(320deg) brightness(99%) contrast(87%);
+}
+
+.text-area_error > .text-area__inner > .text-area__header > .text-area__label {
+    color: #C30052;
+}
+
+.text-area__error-label {
+    margin-top: 9px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #C30052;
+}
+
+.text-area_error > .text-area__inner > .text-area__field::placeholder {
+    color: hsl(335, 100%, 78%);
+}
+
+/* Секция "Поиск" */
+.search {
+    background: url("/img/pattern.png") #F7F7FC;
+    background-size: cover;
+}
+
+.search__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 1192px;
+    margin: 0 auto;
+    padding: 55px 52px;
+}
+
+.search__title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+}
+
+.search__form {
+    position: relative;
+    margin: auto;
+}
+
+.search__input {
+    width: 538px;
 }
 
 /* Раздел "Книги" */
@@ -570,6 +730,10 @@
     margin-top: 24px;
 }
 
+.form__text-area {
+    margin-top: 24px;
+}
+
 .form__actions {
     margin-right: -8px;
     margin-top: 24px;
@@ -600,6 +764,12 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    top: 0;
+    right: 0;
+}
+
+.add-book-form > .form__inner {
+    width: 442px;
 }
 
 .error-popup {
@@ -678,18 +848,6 @@
 
 .radio__radio:checked ~ .radio__button::after {
     display: block;
-}
-
-form textarea {
-    max-width: 20rem;
-    max-height: 10rem;
-    min-width: 9rem;
-    min-height: 3rem;
-}
-
-input, textarea {
-    font-family: inherit;
-    font-size: 14px;
 }
 
 form .error {
