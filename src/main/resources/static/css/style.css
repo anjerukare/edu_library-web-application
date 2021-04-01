@@ -392,6 +392,13 @@
     color: #C30052;
 }
 
+.input__note-label {
+    margin-top: 9px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #6E7191;
+}
+
 .input_error > .input__field::placeholder {
     color: hsl(335, 100%, 78%);
 }

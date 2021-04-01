@@ -65,6 +65,7 @@
                     <label class="input__label">Ссылка на обложку</label>
                     <div class="input__error-label" th:if="${#fields.hasErrors('coverUrl')}"
                          th:errors="*{coverUrl}"></div>
+                    <div class="input__note-label">Поле можно оставить пустым</div>
                 </div>
                 <div class="form__actions">
                     <input class="button form__action" type="submit" value="Добавить книгу"/>
