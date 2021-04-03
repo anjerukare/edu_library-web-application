@@ -16,6 +16,8 @@ public class Book {
 
     private String coverUrl;
 
+    private String bookUrl;
+
     public String getCoverUrl() {
         return coverUrl;
     }
@@ -54,5 +56,13 @@ public class Book {
 
     public void setAnnotation(String annotation) {
         this.annotation = annotation;
+    }
+
+    public String getBookUrl() {
+        return bookUrl;
+    }
+
+    public void setBookUrl(String bookUrl) {
+        this.bookUrl = bookUrl;
     }
 }

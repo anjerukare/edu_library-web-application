@@ -27,12 +27,22 @@
                                   th:text="${book.getName()}"></span>
                             <span class="book-card__author" th:text="${book.getAuthor()}"></span>
                             <p class="book-card__annotation" th:text="${book.getAnnotation()}"></p>
-                            <div class="book-card__actions" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <div class="book-card__actions">
+                                <a class="button book-card__action"
+                                   th:if="${book.getBookUrl()}"
+                                   th:target="${#authorization.expression('isAuthenticated()') ?
+                                                '_blank' : '_self'}"
+                                   th:href="${#authorization.expression('isAuthenticated()') ?
+                                              book.getBookUrl : '/signin'}">
+                                    Читать
+                                </a>
                                 <a class="button button_subtle book-card__action"
+                                   sec:authorize="hasRole('ROLE_ADMIN')"
                                    th:href="@{/books/{id}/edit(id=${book.getId()})}">
                                     Править
                                 </a>
-                                <form th:method="delete" th:action="@{/books/{id}(id=${book.getId()})}">
+                                <form th:method="delete" th:action="@{/books/{id}(id=${book.getId()})}"
+                                      sec:authorize="hasRole('ROLE_ADMIN')">
                                     <input class="button button_subtle book-card__action"
                                            type="submit" value="Удалить"/>
                                 </form>
