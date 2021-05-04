@@ -29,7 +29,7 @@
                             <p class="book-card__annotation" th:text="${book.getAnnotation()}"></p>
                             <div class="book-card__actions">
                                 <a class="button book-card__action"
-                                   th:if="${book.getBookUrl()}"
+                                   th:if="${book.getBookUrl() != ''}"
                                    th:target="${#authorization.expression('isAuthenticated()') ?
                                                 '_blank' : '_self'}"
                                    th:href="${#authorization.expression('isAuthenticated()') ?
