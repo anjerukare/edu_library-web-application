@@ -45,6 +45,19 @@
    2. [Иллюстрации Дарьи Мартовской][Martovski] – зарисовки, использованные в проекте,
 дабы разнообразить фон некоторых секций.
 
+## Скриншоты веб-приложения
+   1. Главная страница, как её видит администратор;
+
+![Index as admin](https://i.ibb.co/MpdTYwk/index-as-admin.png)
+
+   2. Страница авторизации и регистрации;
+
+![Sign-in and sing-up](https://i.ibb.co/gMtSjht/signin-signup.png)
+
+   3. Страница книги, как её видит администратор.
+
+![Book page](https://i.ibb.co/NjGyThs/book-page.png)
+
 [//]: # (Ссылки на материалы для подробного ознакомления)
 
    [MVC]: <https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller>
