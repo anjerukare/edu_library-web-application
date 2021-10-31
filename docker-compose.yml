@@ -1,0 +1,22 @@
+version: "3.8"
+
+volumes:
+  library-postgres-data:
+
+services:
+  app:
+    image: 'anjerukare/library:latest'
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/library
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+  db:
+    image: 'postgres:alpine'
+    volumes:
+      - library-postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=library
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

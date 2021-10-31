@@ -1,0 +1,2 @@
+insert into users (username, password) values ('admin', '$2a$12$T3Nt5hkH54agvABcq1zPnuIEfOBFLxkp1YwdYMULPvM7EEnfAObrS') on conflict do nothing;
+insert into authorities values (1, 'ROLE_ADMIN') on conflict do nothing;
