@@ -1,14 +1,14 @@
 package edu.mtp.Library.controllers;
 
-import edu.mtp.Library.dao.AuthorityDao;
 import edu.mtp.Library.dao.UserDao;
-import edu.mtp.Library.models.Authority;
 import edu.mtp.Library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
@@ -16,13 +16,11 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserDao userDao;
-    private final AuthorityDao authorityDao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserDao userDao, AuthorityDao authorityDao, PasswordEncoder passwordEncoder) {
+    public UserController(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
-        this.authorityDao = authorityDao;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -37,8 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String register(@ModelAttribute @Valid User user,
-                           BindingResult bindingResult, @RequestParam String role) {
+    public String register(@ModelAttribute @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "users/signup";
         }
@@ -49,15 +46,7 @@ public class UserController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.add(user);
-        Long userId = userDao.getIdByUsername(user.getUsername());
-        switch (role) {
-            case "writer":
-                authorityDao.add(new Authority(userId, "ROLE_WRITER"));
-                break;
-            default:
-                authorityDao.add(new Authority(userId, "ROLE_READER"));
-                break;
-        }
+
         return "redirect:/signin";
     }
 }

@@ -1,6 +1,7 @@
 package edu.mtp.Library.controllers;
 
 import edu.mtp.Library.dao.BookDao;
+import edu.mtp.Library.dao.UserDao;
 import edu.mtp.Library.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -21,11 +23,13 @@ import static java.lang.Math.abs;
 public class BookController {
 
     private final BookDao bookDao;
+    private final UserDao userDao;
     private final static Random random = new Random();
 
     @Autowired
-    public BookController(BookDao bookDao) {
+    public BookController(BookDao bookDao, UserDao userDao) {
         this.bookDao = bookDao;
+        this.userDao = userDao;
     }
 
     @GetMapping
@@ -50,7 +54,7 @@ public class BookController {
         if (query.equals(""))
             return "redirect:/books";
 
-        List<Book> books = bookDao.getByNameOrAuthor(query);
+        List<Book> books = bookDao.getByName(query);
         books.sort(Comparator.comparing(Book::getName));
         model.addAttribute("books", books);
         model.addAttribute("random", abs(random.nextInt()));
@@ -59,31 +63,33 @@ public class BookController {
     }
 
     @GetMapping("/new")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_WRITER')")
+    @PreAuthorize("isAuthenticated()")
     public String newBook(@ModelAttribute Book book) {
         return "books/new";
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_WRITER')")
+    @PreAuthorize("isAuthenticated()")
     public String addBook(@ModelAttribute @Valid Book book,
-                          BindingResult bindingResult) {
+                          BindingResult bindingResult,
+                          Principal principal) {
         if (bindingResult.hasErrors())
             return "books/new";
 
+        book.setPublisherId(userDao.getIdByUsername(principal.getName()));
         bookDao.add(book);
         return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editBook(@PathVariable int id, Model model) {
         model.addAttribute("book", bookDao.get(id));
         return "books/edit";
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String setBook(@PathVariable int id,
                           @ModelAttribute @Valid Book book,
                           BindingResult bindingResult) {
@@ -96,7 +102,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteBook(@PathVariable int id) {
         bookDao.delete(id);
         return "redirect:/books";
