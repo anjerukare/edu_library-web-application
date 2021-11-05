@@ -30,22 +30,17 @@ public class UserDao {
                 user.getUsername(), user.getPassword());
     }
 
-    public User get(Long id) {
+    public User get(int id) {
         return jdbcTemplate.query("select * from users where id = ?",
                 new BeanPropertyRowMapper<>(User.class), id).stream().findAny().orElse(null);
     }
 
-    public Long getIdByUsername(String username) {
-        return jdbcTemplate.query("select id from users where username = ?",
-                new SingleColumnRowMapper<>(Long.class), username).stream().findAny().orElse(null);
-    }
-
-    public void set(Long id, User user) {
+    public void set(int id, User user) {
         jdbcTemplate.update("update users set username = ?, password = ? where id = ?",
                 user.getUsername(), user.getPassword(), id);
     }
 
-    public void delete(Long id) {
+    public void delete(int id) {
         jdbcTemplate.update("delete from users where id = ?", id);
     }
 
@@ -53,5 +48,11 @@ public class UserDao {
         Optional<Boolean> exists = jdbcTemplate.query("select exists(select 1 from users where username = ?)",
                 new SingleColumnRowMapper<>(Boolean.class), username).stream().findAny();
         return exists.orElse(false);
+    }
+
+    public Integer getIdByUsername(String username) {
+        Optional<Integer> userId = jdbcTemplate.query("select id from users where username = ?",
+                new SingleColumnRowMapper<>(Integer.class), username).stream().findAny();
+        return userId.orElse(null);
     }
 }

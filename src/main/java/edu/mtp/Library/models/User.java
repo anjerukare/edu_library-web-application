@@ -3,7 +3,8 @@ package edu.mtp.Library.models;
 import javax.validation.constraints.Size;
 
 public class User {
-    private Long id;
+
+    private int id;
 
     @Size(min = 2, max = 16, message = "Поле \"Имя пользователя\" должно иметь от 2 до 16 символов")
     private String username;
@@ -11,7 +12,15 @@ public class User {
     @Size(min = 8, max = 64, message = "Поле \"Пароль\" должно иметь от 8 до 64 символов")
     private String password;
 
-    private boolean enabled;
+    private int roleId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -29,11 +38,12 @@ public class User {
         this.password = password;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
+
 }

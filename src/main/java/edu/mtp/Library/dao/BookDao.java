@@ -23,9 +23,10 @@ public class BookDao {
     }
 
     public void add(Book book) {
-        jdbcTemplate.update("insert into books(name, author, annotation, coverurl, bookurl) " +
-                        "values(?, ?, ?, ?, ?)", book.getName(), book.getAuthor(), book.getAnnotation(),
-                book.getCoverUrl(), book.getBookUrl());
+        jdbcTemplate.update("insert into books(name, annotation, coverurl, bookurl, publisherid) " +
+                        "values(?, ?, ?, ?, ?)",
+                book.getName(), book.getAnnotation(), book.getCoverUrl(), book.getBookUrl(),
+                book.getPublisherId());
     }
 
     public Book get(int id) {
@@ -33,15 +34,14 @@ public class BookDao {
                 new BeanPropertyRowMapper<>(Book.class), id).stream().findAny().orElse(null);
     }
 
-    public List<Book> getByNameOrAuthor(String query) {
-        return jdbcTemplate.query("select * from books where lower(name) like lower(?) " +
-                        "or lower(author) like lower(?)",
-                new BeanPropertyRowMapper<>(Book.class), "%"+query+"%", "%"+query+"%");
+    public List<Book> getByName(String query) {
+        return jdbcTemplate.query("select * from books where lower(name) like lower(?)",
+                new BeanPropertyRowMapper<>(Book.class), "%"+query+"%");
     }
 
     public void set(int id, Book book) {
-        jdbcTemplate.update("update books set name = ?, author = ?, annotation = ?, coverurl = ?, " +
-                "bookurl = ? where id = ?", book.getName(), book.getAuthor(), book.getAnnotation(),
+        jdbcTemplate.update("update books set name = ?, annotation = ?, coverurl = ?, " +
+                "bookurl = ? where id = ?", book.getName(), book.getAnnotation(),
                 book.getCoverUrl(), book.getBookUrl(), id);
     }
 
