@@ -3,7 +3,6 @@ package edu.mtp.Library.controllers;
 import edu.mtp.Library.dao.AuthorDao;
 import edu.mtp.Library.dao.BookDao;
 import edu.mtp.Library.dao.UserDao;
-import edu.mtp.Library.models.Author;
 import edu.mtp.Library.models.Book;
 import edu.mtp.Library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 
