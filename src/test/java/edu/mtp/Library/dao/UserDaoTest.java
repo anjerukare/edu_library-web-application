@@ -2,7 +2,6 @@ package edu.mtp.Library.dao;
 
 import edu.mtp.Library.models.Role;
 import edu.mtp.Library.models.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

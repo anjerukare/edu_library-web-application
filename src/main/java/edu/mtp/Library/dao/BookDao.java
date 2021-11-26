@@ -1,7 +1,9 @@
 package edu.mtp.Library.dao;
 
 import edu.mtp.Library.models.Book;
-import org.simpleflatmapper.jdbc.spring.*;
+import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
+import org.simpleflatmapper.jdbc.spring.ResultSetExtractorImpl;
+import org.simpleflatmapper.jdbc.spring.SqlParameterSourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
