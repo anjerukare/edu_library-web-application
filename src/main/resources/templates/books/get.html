@@ -25,7 +25,13 @@
                         <div class="book-card__description book-card__description_large">
                             <span class="book-card__title book-card__title_large"
                                   th:text="${book.getName()}"></span>
-                            <span class="book-card__author" th:text="${book.getAuthor()}"></span>
+                            <span class="book-card__author">
+                                <span th:each="author, iterStatus : ${book.getAuthors()}"
+                                      th:text="!${iterStatus.last} ? ${author.getFullName(true)} + ', ' :
+                                          ${author.getFullName(true)}"
+                                      th:title="${author.getPatronymic() != null} ? ${author.getFullName()}">
+                                </span>
+                            </span>
                             <p class="book-card__annotation" th:text="${book.getAnnotation()}"></p>
                             <div class="book-card__actions">
                                 <a class="button book-card__action"

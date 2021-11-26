@@ -1,58 +1,79 @@
 package edu.mtp.Library.dao;
 
 import edu.mtp.Library.models.User;
+import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
+import org.simpleflatmapper.jdbc.spring.ResultSetExtractorImpl;
+import org.simpleflatmapper.jdbc.spring.SqlParameterSourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 @Component
+@PropertySource("classpath:/sql/users.properties")
 public class UserDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+    private final ResultSetExtractorImpl<User> extractor =
+            JdbcTemplateMapperFactory
+                    .newInstance()
+                    .addKeys("id", "role_id")
+                    .newResultSetExtractor(User.class);
+
+    private final SqlParameterSourceFactory<User> parameterFactory =
+            JdbcTemplateMapperFactory
+                    .newInstance()
+                    .newSqlParameterSourceFactory(User.class);
+
+    @Value("${users.queries.insert-user}")
+    private String INSERT_USER_QUERY;
+
+    @Value("${users.queries.is-exists}")
+    private String IS_EXISTS_QUERY;
+
+    @Value("${users.queries.get-id-by-username}")
+    private String GET_ID_BY_USERNAME_QUERY;
+
+    @Value("${users.queries.get-by-id}")
+    private String GET_BY_ID_QUERY;
 
     @Autowired
-    public UserDao(JdbcTemplate jdbcTemplate) {
+    public UserDao(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<User> getAll() {
-        return jdbcTemplate.query("select * from users", new BeanPropertyRowMapper<>(User.class));
-    }
-
     public void add(User user) {
-        jdbcTemplate.update("insert into users(username, password) values(?, ?)",
-                user.getUsername(), user.getPassword());
-    }
-
-    public User get(int id) {
-        return jdbcTemplate.query("select * from users where id = ?",
-                new BeanPropertyRowMapper<>(User.class), id).stream().findAny().orElse(null);
-    }
-
-    public void set(int id, User user) {
-        jdbcTemplate.update("update users set username = ?, password = ? where id = ?",
-                user.getUsername(), user.getPassword(), id);
-    }
-
-    public void delete(int id) {
-        jdbcTemplate.update("delete from users where id = ?", id);
+        jdbcTemplate.update(INSERT_USER_QUERY, parameterFactory.newSqlParameterSource(user));
     }
 
     public Boolean isExists(String username) {
-        Optional<Boolean> exists = jdbcTemplate.query("select exists(select 1 from users where username = ?)",
-                new SingleColumnRowMapper<>(Boolean.class), username).stream().findAny();
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("username", username);
+        Optional<Boolean> exists = jdbcTemplate.query(IS_EXISTS_QUERY,
+                parameterSource, new SingleColumnRowMapper<>(Boolean.class)).stream().findAny();
         return exists.orElse(false);
     }
 
     public Integer getIdByUsername(String username) {
-        Optional<Integer> userId = jdbcTemplate.query("select id from users where username = ?",
-                new SingleColumnRowMapper<>(Integer.class), username).stream().findAny();
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("username", username);
+        Optional<Integer> userId = jdbcTemplate.query(GET_ID_BY_USERNAME_QUERY,
+                parameterSource, new SingleColumnRowMapper<>(Integer.class)).stream().findAny();
         return userId.orElse(null);
+    }
+
+    public User get(int id) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        return jdbcTemplate.query(GET_BY_ID_QUERY, parameterSource, extractor)
+                .stream().findAny().orElse(null);
     }
 }

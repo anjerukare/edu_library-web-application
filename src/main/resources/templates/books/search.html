@@ -37,7 +37,7 @@
                     <h2 class="books__title">
                         Книги
                         <a class="button button_icon button_secondary books__add-book" th:href="@{/books/new}"
-                           sec:authorize="hasAnyRole('ROLE_WRITER', 'ROLE_ADMIN')">
+                           sec:authorize="isAuthenticated()">
                             <img class="button__icon" src="/img/add.png"/>
                         </a>
                     </h2>
@@ -55,8 +55,11 @@
                                    th:href="@{/books/{id}(id=${book.getId()})}"
                                    th:text="${book.getName()}">
                                 </a>
-                                <span class="book-card__author"
-                                      th:text="${book.getAuthor()}">
+                                <span class="book-card__author">
+                                    <span th:each="author, iterStatus : ${book.getAuthors()}"
+                                          th:text="!${iterStatus.last} ?
+                                              ${author.getFullName(true)} + ', ' :
+                                              ${author.getFullName(true)}"></span>
                                 </span>
                             </div>
                         </li>

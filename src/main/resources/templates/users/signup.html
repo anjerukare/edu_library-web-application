@@ -15,47 +15,47 @@
                      th:classappend="${#fields.hasErrors('username')? 'input_error' : ''}">
                     <input class="input__field input__field_contains_button-clear
                             input__field_contains_icon input__field_contains_label"
-                           type="text" name="username" placeholder="Имя пользователя"
+                           type="text" placeholder="Имя пользователя"
                            th:field="*{username}" required
                            th:autofocus="${!#fields.hasErrors('password') || #fields.hasErrors('username')}"/>
                     <button class="input__button-clear" type="button" tabindex="-1"
                             onclick="this.previousElementSibling.value = ''"></button>
                     <img class="input__icon" src="/img/user.png"/>
                     <label class="input__label">Имя пользователя</label>
-                    <div class="input__error-label" th:if="${#fields.hasErrors('username')}"
+                    <div class="error-label input__error-label" th:if="${#fields.hasErrors('username')}"
                          th:errors="*{username}"></div>
                 </div>
                 <div class="input form__input"
                      th:classappend="${#fields.hasErrors('password')? 'input_error' : ''}">
                     <input class="input__field input__field_contains_button-clear
                             input__field_contains_icon input__field_contains_label"
-                           type="password" name="password" placeholder="Пароль"
+                           type="password" placeholder="Пароль"
                            th:field="*{password}" required
                            th:autofocus="${#fields.hasErrors('password')}"/>
                     <button class="input__button-clear" type="button" tabindex="-1"
                             onclick="this.previousElementSibling.value = ''"></button>
                     <img class="input__icon" src="/img/lock.png"/>
                     <label class="input__label">Пароль</label>
-                    <div class="input__error-label" th:if="${#fields.hasErrors('password')}"
+                    <div class="error-label input__error-label" th:if="${#fields.hasErrors('password')}"
                          th:errors="*{password}"></div>
                 </div>
-                <div class="radio-group">
-                    <div class="radio-group__header">Выберите роль</div>
-                    <div class="radio-group__inner">
-                        <label class="radio" for="roleChoice1">
-                            Читатель
-                            <input class="radio__radio" type="radio" id="roleChoice1" name="role"
-                                   value="reader" checked>
-                            <span class="radio__button"></span>
-                        </label>
-                        <label class="radio" for="roleChoice2">
-                            Писатель
-                            <input class="radio__radio" type="radio" id="roleChoice2" name="role"
-                                   value="writer">
-                            <span class="radio__button"></span>
-                        </label>
-                    </div>
-                </div>
+<!--                <div class="radio-group">-->
+<!--                    <div class="radio-group__header">Выберите роль</div>-->
+<!--                    <div class="radio-group__inner">-->
+<!--                        <label class="radio" for="roleChoice1">-->
+<!--                            Читатель-->
+<!--                            <input class="radio__radio" type="radio" id="roleChoice1" name="role"-->
+<!--                                   value="reader" checked>-->
+<!--                            <span class="radio__button"></span>-->
+<!--                        </label>-->
+<!--                        <label class="radio" for="roleChoice2">-->
+<!--                            Писатель-->
+<!--                            <input class="radio__radio" type="radio" id="roleChoice2" name="role"-->
+<!--                                   value="writer">-->
+<!--                            <span class="radio__button"></span>-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="form__actions">
                     <input class="button form__action" type="submit" value="Создать аккаунт"/>
                     <a class="button button_subtle form__action" th:href="@{/books}">Вернуться</a>

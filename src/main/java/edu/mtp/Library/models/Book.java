@@ -1,7 +1,11 @@
 package edu.mtp.Library.models;
 
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Book {
 
@@ -10,21 +14,24 @@ public class Book {
     @Size(min = 2, max = 32, message = "Поле \"Имя\" должно иметь от 2 до 32 символов")
     private String name;
 
-    @Size(min = 8, max = 512, message = "Поле \"Описание\" должно иметь от 8 до 512 символов")
+    private List<Author> authors = new ArrayList<>();
+
+    @Size(min = 8, max = 256, message = "Поле \"Описание\" должно иметь от 8 до 256 символов")
     private String annotation;
 
     private String coverUrl;
 
     private String bookUrl;
 
-    private int publisherId;
+    private User publisher;
 
-    private Date createDate;
+    private Date createDate = new Date();
 
-    private int moderatorId;
+    private User moderator;
 
-    private boolean published;
+    private boolean published = false;
 
+    /* Getters, setters, equals, hashCode and to String */
     public int getId() {
         return id;
     }
@@ -39,6 +46,14 @@ public class Book {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public String getAnnotation() {
@@ -65,12 +80,12 @@ public class Book {
         this.bookUrl = bookUrl;
     }
 
-    public int getPublisherId() {
-        return publisherId;
+    public User getPublisher() {
+        return publisher;
     }
 
-    public void setPublisherId(int publisherId) {
-        this.publisherId = publisherId;
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
     }
 
     public Date getCreateDate() {
@@ -81,12 +96,12 @@ public class Book {
         this.createDate = createDate;
     }
 
-    public int getModeratorId() {
-        return moderatorId;
+    public User getModerator() {
+        return moderator;
     }
 
-    public void setModeratorId(int moderatorId) {
-        this.moderatorId = moderatorId;
+    public void setModerator(User moderator) {
+        this.moderator = moderator;
     }
 
     public boolean isPublished() {
@@ -97,4 +112,32 @@ public class Book {
         this.published = published;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id && published == book.published && Objects.equals(name, book.name) && Objects.equals(authors, book.authors) && Objects.equals(annotation, book.annotation) && Objects.equals(coverUrl, book.coverUrl) && Objects.equals(bookUrl, book.bookUrl) && Objects.equals(publisher, book.publisher) && Objects.equals(createDate, book.createDate) && Objects.equals(moderator, book.moderator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, authors, annotation, coverUrl, bookUrl, publisher, createDate, moderator, published);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", authors=" + authors +
+                ", annotation='" + annotation + '\'' +
+                ", coverUrl='" + coverUrl + '\'' +
+                ", bookUrl='" + bookUrl + '\'' +
+                ", publisher=" + publisher +
+                ", createDate=" + createDate +
+                ", moderator=" + moderator +
+                ", published=" + published +
+                '}';
+    }
 }
