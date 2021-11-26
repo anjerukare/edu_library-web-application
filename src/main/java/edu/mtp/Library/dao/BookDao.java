@@ -1,51 +1,115 @@
 package edu.mtp.Library.dao;
 
 import edu.mtp.Library.models.Book;
+import org.simpleflatmapper.jdbc.spring.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@PropertySource("classpath:/sql/books.properties")
 public class BookDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+    private final ResultSetExtractorImpl<Book> extractor =
+            JdbcTemplateMapperFactory
+                    .newInstance()
+                    .addKeys("id", "authors_id", "authors_publisher_id", "authors_publisher_role_id",
+                            "authors_moderator_id", "authors_moderator_role_id", "publisher_id",
+                            "publisher_role_id", "moderator_id", "moderator_role_id")
+                    .newResultSetExtractor(Book.class);
+
+    private final SqlParameterSourceFactory<Book> parameterFactory =
+            JdbcTemplateMapperFactory
+                    .newInstance()
+                    .newSqlParameterSourceFactory(Book.class);
+
+    @Value("${books.queries.get-all}")
+    private String GET_ALL_QUERY;
+
+    @Value("${books.query-pieces.insert-book}")
+    private String INSERT_BOOK_QUERY_PIECE;
+
+    @Value("${books.query-pieces.add-junction-with-author.i}")
+    private String ADD_JUNCTION_WITH_AUTHOR_I_QUERY_PIECE;
+
+    @Value("${books.query-pieces.add-junction-with-author.n}")
+    private String ADD_JUNCTION_WITH_AUTHOR_N_QUERY_PIECE;
+
+    @Value("${books.queries.get-by-id}")
+    private String GET_BY_ID_QUERY;
+
+    @Value("${books.queries.search}")
+    private String SEARCH_QUERY;
+
+    @Value("${books.query-pieces.update-book}")
+    private String UPDATE_BOOK_QUERY_PIECE;
+
+    @Value("${books.query-pieces.delete-junctions-with-authors}")
+    private String DELETE_JUNCTIONS_QUERY_PIECE;
+
+    @Value("${books.query-pieces.delete-book}")
+    private String DELETE_BOOK_QUERY_PIECE;
 
     @Autowired
-    public BookDao(JdbcTemplate jdbcTemplate) {
+    public BookDao(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Book> getAll() {
-        return jdbcTemplate.query("select * from books", new BeanPropertyRowMapper<>(Book.class));
+        return jdbcTemplate.query(GET_ALL_QUERY, extractor);
     }
 
     public void add(Book book) {
-        jdbcTemplate.update("insert into books(name, annotation, coverurl, bookurl, publisherid) " +
-                        "values(?, ?, ?, ?, ?)",
-                book.getName(), book.getAnnotation(), book.getCoverUrl(), book.getBookUrl(),
-                book.getPublisherId());
+        String query = buildAddQuery(book.getAuthors().size());
+        jdbcTemplate.update(query, parameterFactory.newSqlParameterSource(book));
+    }
+
+    private String buildAddQuery(int authorsCount) {
+        StringBuilder builder = new StringBuilder(INSERT_BOOK_QUERY_PIECE);
+        for (int i = 0; i < authorsCount - 1; ++i)
+            builder.append(String.format(ADD_JUNCTION_WITH_AUTHOR_I_QUERY_PIECE, i));
+        builder.append(String.format(ADD_JUNCTION_WITH_AUTHOR_N_QUERY_PIECE, authorsCount - 1));
+        return builder.toString();
     }
 
     public Book get(int id) {
-        return jdbcTemplate.query("select * from books where id = ?",
-                new BeanPropertyRowMapper<>(Book.class), id).stream().findAny().orElse(null);
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        return jdbcTemplate.query(GET_BY_ID_QUERY, parameterSource, extractor)
+                .stream().findAny().orElse(null);
     }
 
-    public List<Book> getByName(String query) {
-        return jdbcTemplate.query("select * from books where lower(name) like lower(?)",
-                new BeanPropertyRowMapper<>(Book.class), "%"+query+"%");
+    public List<Book> getBySearchQuery(String query) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("query", query);
+        return jdbcTemplate.query(SEARCH_QUERY, parameterSource, extractor);
     }
 
-    public void set(int id, Book book) {
-        jdbcTemplate.update("update books set name = ?, annotation = ?, coverurl = ?, " +
-                "bookurl = ? where id = ?", book.getName(), book.getAnnotation(),
-                book.getCoverUrl(), book.getBookUrl(), id);
+    public void save(Book book) {
+        String sql = buildSaveQuery(book.getAuthors().size());
+        jdbcTemplate.update(sql, parameterFactory.newSqlParameterSource(book));
+    }
+
+    private String buildSaveQuery(int authorsCount) {
+        StringBuilder builder = new StringBuilder(UPDATE_BOOK_QUERY_PIECE);
+        for (int i = 0; i < authorsCount; ++i)
+            builder.append(String.format(ADD_JUNCTION_WITH_AUTHOR_I_QUERY_PIECE, i));
+        builder.append(DELETE_JUNCTIONS_QUERY_PIECE);
+        return builder.toString();
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("delete from books where id = ?", id);
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_JUNCTIONS_QUERY_PIECE ,
+                parameterSource);
     }
 }

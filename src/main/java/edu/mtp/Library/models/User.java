@@ -1,6 +1,7 @@
 package edu.mtp.Library.models;
 
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 public class User {
 
@@ -12,8 +13,9 @@ public class User {
     @Size(min = 8, max = 64, message = "Поле \"Пароль\" должно иметь от 8 до 64 символов")
     private String password;
 
-    private int roleId;
+    private Role role;
 
+    /* Getters, setters, equals, hashCode and to String */
     public int getId() {
         return id;
     }
@@ -38,12 +40,34 @@ public class User {
         this.password = password;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, role);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

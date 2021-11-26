@@ -1,6 +1,7 @@
 package edu.mtp.Library.controllers;
 
 import edu.mtp.Library.dao.UserDao;
+import edu.mtp.Library.models.Role;
 import edu.mtp.Library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,15 +37,17 @@ public class UserController {
 
     @PostMapping("/signup")
     public String register(@ModelAttribute @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+        if (userDao.isExists(user.getUsername()))
+            bindingResult.rejectValue("username", "error.user",
+                    "Пользователь с таким именем уже существует");
+        if (bindingResult.hasErrors())
             return "users/signup";
-        }
-        else if (userDao.isExists(user.getUsername())) {
-            bindingResult.rejectValue("username", "error.user", "Пользователь с таким именем уже существует");
-            return "users/signup";
-        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = new Role();
+        role.setId(3);
+        user.setRole(role);
+
         userDao.add(user);
 
         return "redirect:/signin";
