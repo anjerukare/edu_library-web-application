@@ -39,6 +39,22 @@
                     <div class="error-label select__error-label" th:if="${#fields.hasErrors('authors')}"
                          th:errors="*{authors}"></div>
                 </div>
+                <div class="select form__select"
+                     th:classappend="${#fields.hasErrors('tags')? 'select_error' : ''}">
+                    <div class="select__inner">
+                        <label class="select__label">Теги книги</label>
+                        <select class="select__option-group" multiple th:field="*{tags}"
+                                th:size="${allTags.size()}">
+                            <option class="select__option" th:each="tag : ${allTags}"
+                                    th:text="${tag.getName()}"
+                                    th:title="${tag.getDescription()} != null ? ${tag.getDescription()}"
+                                    th:value="${tag.id}"></option>
+                        </select>
+                    </div>
+                    <div class="form__note-label">Можно ничего не выбирать</div>
+                    <div class="error-label select__error-label" th:if="${#fields.hasErrors('tags')}"
+                         th:errors="*{tags}"></div>
+                </div>
                 <div class="text-area form__text-area"
                      th:classappend="${#fields.hasErrors('annotation')? 'text-area_error' : ''}">
                     <div class="text-area__inner">
@@ -69,7 +85,7 @@
                     <label class="input__label">Ссылка на обложку</label>
                     <div class="error-label input__error-label" th:if="${#fields.hasErrors('coverUrl')}"
                          th:errors="*{coverUrl}"></div>
-                    <div class="input__note-label">Поле можно оставить пустым</div>
+                    <div class="form__note-label">Поле можно оставить пустым</div>
                 </div>
                 <div class="input form__input"
                      th:classappend="${#fields.hasErrors('bookUrl')? 'input_error' : ''}">
@@ -82,7 +98,7 @@
                     <label class="input__label">Ссылка на книгу</label>
                     <div class="error-label input__error-label" th:if="${#fields.hasErrors('bookUrl')}"
                          th:errors="*{bookUrl}"></div>
-                    <div class="input__note-label">Поле можно оставить пустым</div>
+                    <div class="form__note-label">Поле можно оставить пустым</div>
                 </div>
                 <div class="form__actions">
                     <input class="button form__action" type="submit" value="Изменить"/>

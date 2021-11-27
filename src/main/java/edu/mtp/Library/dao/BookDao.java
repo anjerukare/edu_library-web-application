@@ -24,8 +24,8 @@ public class BookDao {
             JdbcTemplateMapperFactory
                     .newInstance()
                     .addKeys("id", "authors_id", "authors_publisher_id", "authors_publisher_role_id",
-                            "authors_moderator_id", "authors_moderator_role_id", "publisher_id",
-                            "publisher_role_id", "moderator_id", "moderator_role_id")
+                            "authors_moderator_id", "authors_moderator_role_id", "tags_id",
+                            "publisher_id", "publisher_role_id", "moderator_id", "moderator_role_id")
                     .newResultSetExtractor(Book.class);
 
     private final SqlParameterSourceFactory<Book> parameterFactory =
@@ -42,6 +42,9 @@ public class BookDao {
     @Value("${books.query-pieces.add-junction-with-author.i}")
     private String ADD_JUNCTION_WITH_AUTHOR_I_QUERY_PIECE;
 
+    @Value("${books.query-pieces.add-junction-with-tag.i}")
+    private String ADD_JUNCTION_WITH_TAG_I_QUERY_PIECE;
+
     @Value("${books.query-pieces.add-junction-with-author.n}")
     private String ADD_JUNCTION_WITH_AUTHOR_N_QUERY_PIECE;
 
@@ -54,8 +57,11 @@ public class BookDao {
     @Value("${books.query-pieces.update-book}")
     private String UPDATE_BOOK_QUERY_PIECE;
 
+    @Value("${books.query-pieces.delete-junctions-with-tags}")
+    private String DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE;
+
     @Value("${books.query-pieces.delete-junctions-with-authors}")
-    private String DELETE_JUNCTIONS_QUERY_PIECE;
+    private String DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE;
 
     @Value("${books.query-pieces.delete-book}")
     private String DELETE_BOOK_QUERY_PIECE;
@@ -70,14 +76,16 @@ public class BookDao {
     }
 
     public void add(Book book) {
-        String query = buildAddQuery(book.getAuthors().size());
+        String query = buildAddQuery(book.getAuthors().size(), book.getTags().size());
         jdbcTemplate.update(query, parameterFactory.newSqlParameterSource(book));
     }
 
-    private String buildAddQuery(int authorsCount) {
+    private String buildAddQuery(int authorsCount, int tagsCount) {
         StringBuilder builder = new StringBuilder(INSERT_BOOK_QUERY_PIECE);
         for (int i = 0; i < authorsCount - 1; ++i)
             builder.append(String.format(ADD_JUNCTION_WITH_AUTHOR_I_QUERY_PIECE, i));
+        for (int i = 0; i < tagsCount; ++i)
+            builder.append(String.format(ADD_JUNCTION_WITH_TAG_I_QUERY_PIECE, i));
         builder.append(String.format(ADD_JUNCTION_WITH_AUTHOR_N_QUERY_PIECE, authorsCount - 1));
         return builder.toString();
     }
@@ -96,22 +104,25 @@ public class BookDao {
     }
 
     public void save(Book book) {
-        String sql = buildSaveQuery(book.getAuthors().size());
+        String sql = buildSaveQuery(book.getAuthors().size(), book.getTags().size());
         jdbcTemplate.update(sql, parameterFactory.newSqlParameterSource(book));
     }
 
-    private String buildSaveQuery(int authorsCount) {
+    private String buildSaveQuery(int authorsCount, int tagsCount) {
         StringBuilder builder = new StringBuilder(UPDATE_BOOK_QUERY_PIECE);
         for (int i = 0; i < authorsCount; ++i)
             builder.append(String.format(ADD_JUNCTION_WITH_AUTHOR_I_QUERY_PIECE, i));
-        builder.append(DELETE_JUNCTIONS_QUERY_PIECE);
+        for (int i = 0; i < tagsCount; ++i)
+            builder.append(String.format(ADD_JUNCTION_WITH_TAG_I_QUERY_PIECE, i));
+        builder.append(DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE);
+        builder.append(DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE);
         return builder.toString();
     }
 
     public void delete(int id) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_JUNCTIONS_QUERY_PIECE ,
-                parameterSource);
+        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE +
+                DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE, parameterSource);
     }
 }

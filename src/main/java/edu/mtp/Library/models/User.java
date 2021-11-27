@@ -7,15 +7,15 @@ public class User {
 
     private int id;
 
-    @Size(min = 2, max = 16, message = "Поле \"Имя пользователя\" должно иметь от 2 до 16 символов")
+    @Size(min = 2, max = 16, message = "Поле \"Имя пользователя\" должно иметь от {min} до {max} символов")
     private String username;
 
-    @Size(min = 8, max = 64, message = "Поле \"Пароль\" должно иметь от 8 до 64 символов")
+    @Size(min = 8, max = 64, message = "Поле \"Пароль\" должно иметь от {min} до {max} символов")
     private String password;
 
     private Role role;
 
-    /* Getters, setters, equals, hashCode and to String */
+    /* Getters, setters, equals, hashCode and toString */
     public int getId() {
         return id;
     }

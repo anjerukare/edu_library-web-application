@@ -1,5 +1,6 @@
 package edu.mtp.Library.models;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,16 +11,21 @@ public class Book {
 
     private int id;
 
-    @Size(min = 2, max = 32, message = "Поле \"Имя\" должно иметь от 2 до 32 символов")
+    @Size(min = 2, max = 32, message = "Поле \"Имя\" должно иметь от {min} до {max} символов")
     private String name;
 
+    @NotEmpty(message = "Должен быть выбран хотя бы один автор")
     private List<Author> authors = new ArrayList<>();
 
-    @Size(min = 8, max = 256, message = "Поле \"Описание\" должно иметь от 8 до 256 символов")
+    private List<Tag> tags = new ArrayList<>();
+
+    @Size(min = 8, max = 256, message = "Поле \"Описание\" должно иметь от {min} до {max} символов")
     private String annotation;
 
+    @Size(max = 128, message = "Поле \"Ссылка на обложку\" должно иметь до {max} символов")
     private String coverUrl;
 
+    @Size(max = 128, message = "Поле \"Ссылка на обложку\" должно иметь до {max} символов")
     private String bookUrl;
 
     private User publisher;
@@ -30,7 +36,7 @@ public class Book {
 
     private boolean published = false;
 
-    /* Getters, setters, equals, hashCode and to String */
+    /* Getters, setters, equals, hashCode and toString */
     public int getId() {
         return id;
     }
@@ -53,6 +59,14 @@ public class Book {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public String getAnnotation() {
@@ -116,12 +130,12 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return id == book.id && published == book.published && Objects.equals(name, book.name) && Objects.equals(authors, book.authors) && Objects.equals(annotation, book.annotation) && Objects.equals(coverUrl, book.coverUrl) && Objects.equals(bookUrl, book.bookUrl) && Objects.equals(publisher, book.publisher) && Objects.equals(createDate, book.createDate) && Objects.equals(moderator, book.moderator);
+        return id == book.id && published == book.published && Objects.equals(name, book.name) && Objects.equals(authors, book.authors) && Objects.equals(tags, book.tags) && Objects.equals(annotation, book.annotation) && Objects.equals(coverUrl, book.coverUrl) && Objects.equals(bookUrl, book.bookUrl) && Objects.equals(publisher, book.publisher) && Objects.equals(createDate, book.createDate) && Objects.equals(moderator, book.moderator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, authors, annotation, coverUrl, bookUrl, publisher, createDate, moderator, published);
+        return Objects.hash(id, name, authors, tags, annotation, coverUrl, bookUrl, publisher, createDate, moderator, published);
     }
 
     @Override
@@ -130,6 +144,7 @@ public class Book {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", authors=" + authors +
+                ", tags=" + tags +
                 ", annotation='" + annotation + '\'' +
                 ", coverUrl='" + coverUrl + '\'' +
                 ", bookUrl='" + bookUrl + '\'' +

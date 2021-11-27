@@ -55,7 +55,7 @@
                                    th:href="@{/books/{id}(id=${book.getId()})}"
                                    th:text="${book.getName()}">
                                 </a>
-                                <span class="book-card__author">
+                                <span class="book-card__authors">
                                     <span th:each="author, iterStatus : ${book.getAuthors()}"
                                           th:text="!${iterStatus.last} ?
                                               ${author.getFullName(true)} + ', ' :

@@ -32,7 +32,7 @@ public class Author {
             return surname + ' ' + name + ' ' + patronymic;
     }
 
-    /* Getters, setters, equals, hashCode and to String */
+    /* Getters, setters, equals, hashCode and toString */
     public int getId() {
         return id;
     }

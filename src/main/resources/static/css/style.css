@@ -385,7 +385,7 @@
     color: #C30052;
 }
 
-.input__note-label {
+.form__note-label {
     margin-top: 9px;
     font-size: 14px;
     font-weight: bold;
@@ -844,7 +844,7 @@
     font-size: 20px;
 }
 
-.book-card__author {
+.book-card__authors {
     color: #6E7191;
     display: block;
     white-space: nowrap;
@@ -853,8 +853,34 @@
     margin-top: 5px;
 }
 
-.book-card__annotation {
+.book-card__tags {
+    display: block;
     margin-top: 16px;
+}
+
+.book-card__tag {
+    display: flex inline;
+    width: fit-content;
+    background-color: #F7F7FC;
+    padding: 7px 16px 7px 12px;
+    border-radius: 39px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #6E7191;
+    margin-right: 8px;
+}
+
+.tag-icon {
+    display: inline;
+}
+
+.book-card__tag-icon {
+    margin-right: 4px;
+    filter: invert(46%) sepia(14%) saturate(738%) hue-rotate(197deg) brightness(93%) contrast(88%);
+}
+
+.book-card__annotation {
+    margin-top: 24px;
     width: 512px;
 }
 
