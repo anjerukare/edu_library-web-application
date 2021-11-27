@@ -2,6 +2,7 @@ package edu.mtp.Library.dao;
 
 import edu.mtp.Library.models.Author;
 import edu.mtp.Library.models.Book;
+import edu.mtp.Library.models.Tag;
 import edu.mtp.Library.models.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,9 +27,16 @@ class BookDaoTest {
         bookA.setName("Book A");
 
         Author author1 = new Author();
-        author1.setId(3);
+        author1.setId(7);
         List<Author> authorsA = Arrays.asList(author1);
         bookA.setAuthors(authorsA);
+
+        Tag tag1 = new Tag();
+        tag1.setId(10);
+        Tag tag2 = new Tag();
+        tag2.setId(9);
+        List<Tag> tagsA = Arrays.asList(tag1, tag2);
+        bookA.setTags(tagsA);
 
         bookA.setAnnotation("It's book A which did for tests");
 
@@ -48,6 +56,13 @@ class BookDaoTest {
         List<Author> authorsB = Arrays.asList(author2, author3);
         bookB.setAuthors(authorsB);
 
+        Tag tag3 = new Tag();
+        tag3.setId(1);
+        Tag tag4 = new Tag();
+        tag4.setId(2);
+        List<Tag> tagsB = Arrays.asList(tag3, tag4);
+        bookB.setTags(tagsB);
+
         bookB.setAnnotation("It's book B which did for tests");
 
         User publisherB = new User();
@@ -65,7 +80,7 @@ class BookDaoTest {
 
     @Test
     void add() {
-        bookDao.add(bookB);
+        bookDao.add(bookA);
     }
 
     @Test
@@ -82,12 +97,12 @@ class BookDaoTest {
 
     @Test
     void save() {
-        bookA.setId(19);
+        bookA.setId(38);
         bookDao.save(bookA);
     }
 
     @Test
     void delete() {
-        bookDao.delete(20);
+        bookDao.delete(38);
     }
 }

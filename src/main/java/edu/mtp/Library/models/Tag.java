@@ -2,11 +2,13 @@ package edu.mtp.Library.models;
 
 import java.util.Objects;
 
-public class Role {
-
+public class Tag {
+    
     private int id;
-
+    
     private String name;
+    
+    private String description;
 
     /* Getters, setters, equals, hashCode and toString */
     public int getId() {
@@ -25,24 +27,33 @@ public class Role {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return id == role.id && Objects.equals(name, role.name);
+        Tag tag = (Tag) o;
+        return id == tag.id && Objects.equals(name, tag.name) && Objects.equals(description, tag.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, description);
     }
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Tag{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
