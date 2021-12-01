@@ -8,7 +8,7 @@
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
     </head>
     <body class="page">
-        <form class="add-book-form" th:method="patch" th:action="@{/books/{id}(id=${book.getId()})}"
+        <form class="edit-book-form" th:method="patch" th:action="@{/books/{id}(id=${book.getId()})}"
               th:object="${book}" novalidate>
             <div class="form__inner">
                 <h1 class="form__title">Книги</h1>

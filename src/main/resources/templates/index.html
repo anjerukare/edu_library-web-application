@@ -19,7 +19,7 @@
                     <div class="search__title">
                         Ищете что-то конкретное?
                     </div>
-                    <form class="search__form" th:method="get" th:action="@{/books/search}" novalidate>
+                    <form class="search__form" th:method="get" th:action="@{/search}" novalidate>
                         <div class="input search__input">
                             <input class="input__field input__field_contains_button-clear
                             input__field_contains_icon input__field_contains_label"
@@ -32,16 +32,16 @@
                     </form>
                 </div>
             </section>
-            <section class="books">
-                <div class="books__inner">
-                    <h2 class="books__title">
+            <section class="item-section">
+                <div class="item-section__inner">
+                    <h2 class="item-section__title">
                         Книги
-                        <a class="button button_icon button_secondary books__add-book" th:href="@{/books/new}"
+                        <a class="button button_icon button_secondary item-section__add-item" th:href="@{/books/new}"
                            sec:authorize="isAuthenticated()">
                             <img class="button__icon" src="/img/add.png"/>
                         </a>
                     </h2>
-                    <ul class="books-catalog">
+                    <ul class="catalog">
                         <li class="book-card" th:each="book : ${books}">
                             <a class="book-card__link"
                                th:href="@{/books/{id}(id=${book.getId()})}"
@@ -66,6 +66,45 @@
                     </ul>
                 </div>
             </section>
+            <section class="item-section">
+                <div class="item-section__inner">
+                    <h2 class="item-section__title">
+                        Авторы
+                        <a class="button button_icon button_secondary item-section__add-item" th:href="@{/authors/new}"
+                           sec:authorize="isAuthenticated()">
+                            <img class="button__icon" src="/img/add.png"/>
+                        </a>
+                    </h2>
+                    <ul class="catalog">
+                        <li class="author-card" th:each="author : ${authors}">
+                            <span class="author-card__title" th:text="${author.getFullName(true)}"
+                                  th:title="${author.getPatronymic() != null} ? ${author.getFullName()}"></span>
+                            <div class="author-card__actions" sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="link author-card__action" th:href="@{/authors/{id}/edit(id=${author.getId()})}">
+                                    Править
+                                </a>
+                                <form th:method="delete" th:action="@{/authors/{id}(id=${author.getId()})}"
+                                      sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <input class="link author-card__action" type="submit"
+                                           value="Удалить"/>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="response-popup" th:if="${response.getResult() != null}">
+            <input class="popup-checkbox" type="checkbox" id="response-popup" checked/>
+            <div class="popup form__popup"
+                 th:classappend="${response.getResult().name() == 'ERROR'} ?
+                                form\_\_popup_error : (${response.getResult().name() == 'SUCCESS'} ?
+                                form\_\_popup_success : '')">
+                <span class="popup__header" th:text="${response.getMessage()}"></span>
+                <label for="response-popup">
+                    <img class="icon popup__button-close" src="/img/close.png"/>
+                </label>
+            </div>
         </div>
     </body>
 </html>

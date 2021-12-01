@@ -1,5 +1,6 @@
 package edu.mtp.Library.models;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,19 +8,22 @@ public class Author {
 
     private int id;
 
+    @Size(min = 2, max = 32, message = "Поле \"Фамилия\" должно иметь от {min} до {max} символов")
     private String surname;
 
+    @Size(min = 2, max = 16, message = "Поле \"Имя\" должно иметь от {min} до {max} символов")
     private String name;
 
+    @Size(max = 32, message = "Поле \"Отчество\" должно иметь до {max} символов")
     private String patronymic;
 
     private User publisher;
 
-    private Date createDate;
+    private Date createDate = new Date();
 
     private User moderator;
 
-    private boolean published;
+    private boolean published = false;
 
     public String getFullName() {
         return getFullName(false);

@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
 
 import static java.lang.Math.abs;
@@ -29,6 +27,7 @@ public class BookController {
     private final AuthorDao authorDao;
     private final TagDao tagDao;
     private final UserDao userDao;
+
     private final static Random random = new Random();
 
     @Autowired
@@ -39,34 +38,11 @@ public class BookController {
         this.userDao = userDao;
     }
 
-    @GetMapping
-    public String allBooks(Model model) {
-        List<Book> books = bookDao.getAll();
-        books.sort(Comparator.comparing(Book::getName));
-        model.addAttribute("books", books);
-        model.addAttribute("random", abs(random.nextInt()));
-        return "books/index";
-    }
-
     @GetMapping("/{id}")
     public String getBook(@PathVariable int id, Model model) {
         model.addAttribute("book", bookDao.get(id));
         model.addAttribute("random", abs(random.nextInt()));
         return "books/get";
-    }
-
-    @GetMapping("/search")
-    public String searchBooks(@RequestParam("q") String query,
-                              Model model) {
-        if (query.equals(""))
-            return "redirect:/books";
-
-        List<Book> books = bookDao.getBySearchQuery(query);
-        books.sort(Comparator.comparing(Book::getName));
-        model.addAttribute("books", books);
-        model.addAttribute("random", abs(random.nextInt()));
-        model.addAttribute("q", query);
-        return "books/search";
     }
 
     @GetMapping("/new")
@@ -92,7 +68,7 @@ public class BookController {
         book.setPublisher(publisher);
 
         bookDao.add(book);
-        return "redirect:/books";
+        return "redirect:/";
     }
 
     @GetMapping("/{id}/edit")
@@ -123,6 +99,6 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteBook(@PathVariable int id) {
         bookDao.delete(id);
-        return "redirect:/books";
+        return "redirect:/";
     }
 }
