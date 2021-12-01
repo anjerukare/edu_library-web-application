@@ -19,7 +19,7 @@
                     <div class="search__title">
                         Результаты поиска по запросу
                     </div>
-                    <form class="search__form" th:method="get" th:action="@{/books/search}" novalidate>
+                    <form class="search__form" th:method="get" th:action="@{/search}" novalidate>
                         <div class="input search__input">
                             <input class="input__field input__field_contains_button-clear
                                    input__field_contains_icon input__field_contains_label"
@@ -32,16 +32,16 @@
                     </form>
                 </div>
             </section>
-            <section class="books">
-                <div class="books__inner">
-                    <h2 class="books__title">
+            <section class="item-section">
+                <div class="item-section__inner">
+                    <h2 class="item-section__title">
                         Книги
-                        <a class="button button_icon button_secondary books__add-book" th:href="@{/books/new}"
+                        <a class="button button_icon button_secondary item-section__add-item" th:href="@{/books/new}"
                            sec:authorize="isAuthenticated()">
                             <img class="button__icon" src="/img/add.png"/>
                         </a>
                     </h2>
-                    <ul class="books-catalog">
+                    <ul class="catalog">
                         <li class="book-card" th:each="book : ${books}">
                             <a class="book-card__link"
                                th:href="@{/books/{id}(id=${book.getId()})}"

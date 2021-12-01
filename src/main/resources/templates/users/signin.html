@@ -32,15 +32,15 @@
                 </div>
                 <div class="form__actions">
                     <input class="button form__action" type="submit" value="Войти"/>
-                    <a class="button button_subtle form__action" th:href="@{/books}">Вернуться</a>
+                    <a class="button button_subtle form__action" th:href="@{/}">Вернуться</a>
                 </div>
                 <div class="registration-invite">
                     Впервые у нас?
                     <a class="link form__link" th:href="@{/signup}">Зарегистрироваться</a>
                 </div>
-                <div class="error-popup" th:if="${param.error != null}">
+                <div class="response-popup" th:if="${param.error != null}">
                     <input class="popup-checkbox" type="checkbox" id="popup-userinfo" checked/>
-                    <div class="popup form__popup">
+                    <div class="popup form__popup form__popup_error">
                         <span class="popup__header">Неверные учетные данные</span>
                         <label for="popup-userinfo">
                             <img class="icon popup__button-close" src="/img/close.png"/>

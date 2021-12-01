@@ -8,7 +8,7 @@
     <body>
         <header class="header" th:fragment="header">
             <div class="header__inner">
-                <a class="logo header__logo" th:href="@{/books}">
+                <a class="logo header__logo" th:href="@{/}">
                     <img src="/img/logo.png"/>
                 </a>
                 <div class="header__user-info" sec:authorize="isAuthenticated()">
@@ -27,7 +27,7 @@
                                 <div class="username" sec:authentication="name"></div>
                                 <div class="role">
                                     <span sec:authorize="hasRole('ROLE_READER')">Читатель</span>
-                                    <span sec:authorize="hasRole('ROLE_WRITER')">Писатель</span>
+                                    <span sec:authorize="hasRole('ROLE_MODERATOR')">Модератор</span>
                                     <span sec:authorize="hasRole('ROLE_ADMIN')">Администратор</span>
                                 </div>
                             </div>

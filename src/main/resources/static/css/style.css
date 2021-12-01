@@ -768,28 +768,28 @@
     width: 538px;
 }
 
-/* Раздел "Книги" */
-.books {}
+/* Раздел с элементами */
+.item-section {}
 
-.books__inner {
+.item-section__inner {
     width: 1192px;
     margin: 0 auto;
     padding: 0 52px 48px;
 }
 
-.books__title {
+.item-section__title {
     font-size: 32px;
     padding: 40px 0 32px 0;
 }
 
-.books__add-book {
+.item-section__add-item {
     position: relative;
     top: 2px;
     margin-left: 8px;
 }
 
-/* Каталог книг */
-.books-catalog {
+/* Каталог элементов */
+.catalog {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -901,6 +901,41 @@
     height: unset;
 }
 
+/* Карточка автора */
+.author-card {
+    border-radius: 16px;
+    width: 236px;
+    padding: 18px 24px;
+    box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+}
+
+.author-card__title {
+    font-weight: bold;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+}
+
+.author-card__actions {
+    margin-top: 10px;
+    display: flex;
+}
+
+.author-card__action {
+    margin-right: 16px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: #5F2EEA;
+    transition: color ease-out 0.2s;
+}
+
+.author-card__action:hover {
+    color: #2A00A2;
+}
+
 /* Раздел "Книга" */
 .book {}
 
@@ -967,16 +1002,26 @@
 }
 
 .form__popup {
-    position: relative;
+    position: fixed;
     padding: 16px 24px;
     width: 325px;
-    background: #ED2E7E;
+    background: #14142B;
     color: #FCFCFC;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    top: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: 24px;
+}
+
+.form__popup_error {
+    background: #ED2E7E;
+}
+
+.form__popup_success {
+    background: #00BA88;
 }
 
 .add-book-form > .form__inner {
@@ -990,7 +1035,6 @@
     color: #C30052;
 }
 
-.error-popup {
-    position: absolute;
-    bottom: 24px;
+.response-popup {
+    position: relative;
 }

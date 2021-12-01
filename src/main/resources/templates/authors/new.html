@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Добавить автора</title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    </head>
+    <body class="page">
+        <form class="add-author-form" th:method="post" th:action="@{/authors}" th:object="${author}" novalidate>
+            <div class="form__inner">
+                <h1 class="form__title">Авторы</h1>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('surname')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                  input__field_contains_label"
+                           type="text" placeholder="Фамилия автора"
+                           th:field="*{surname}" required autofocus/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Фамилия автора</label>
+                    <div class="error-label input__error-label" th:if="${#fields.hasErrors('surname')}"
+                         th:errors="*{surname}"></div>
+                </div>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('name')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                  input__field_contains_label"
+                           type="text" placeholder="Имя автора"
+                           th:field="*{name}" required autofocus/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Имя автора</label>
+                    <div class="error-label input__error-label" th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}"></div>
+                </div>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('patronymic')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                  input__field_contains_label"
+                           type="text" placeholder="Отчество автора"
+                           th:field="*{patronymic}" required autofocus/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Отчество автора</label>
+                    <div class="error-label input__error-label" th:if="${#fields.hasErrors('patronymic')}"
+                         th:errors="*{patronymic}"></div>
+                    <div class="form__note-label">Поле можно оставить пустым</div>
+                </div>
+                <div class="form__actions">
+                    <input class="button form__action" type="submit" value="Добавить автора"/>
+                    <a class="button button_subtle form__action" th:href="@{/}">Отмена</a>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
