@@ -25,6 +25,15 @@
                         <div class="book-card__description book-card__description_large">
                             <span class="book-card__title book-card__title_large"
                                   th:text="${book.getName()}"></span>
+                            <form class="book-card__favorite-button" th:method="post"
+                                  th:action="@{/books/{id}/favorite(id=${book.getId()})}"
+                                  sec:authorize="isAuthenticated()">
+                                <input type="checkbox" value="true" id="favorite" name="favorite"
+                                       onchange="this.form.submit()"
+                                       th:checked="${#lists.contains(user.getFavoriteBooksIds(), book.id)}"/>
+                                <label for="favorite">Избранное</label>
+                                <input type="hidden" value="false" name="favorite"/>
+                            </form>
                             <span class="book-card__authors">
                                 <span th:each="author, iterStatus : ${book.getAuthors()}"
                                       th:text="!${iterStatus.last} ? ${author.getFullName(true)} + ', ' :
@@ -58,6 +67,22 @@
                                       sec:authorize="hasRole('ROLE_ADMIN')">
                                     <input class="button button_subtle book-card__action"
                                            type="submit" value="Удалить"/>
+                                </form>
+                                <form th:method="post" th:action="@{/books/{id}/status(id=${book.getId()})}"
+                                      sec:authorize="isAuthenticated()">
+                                    <select class="book-card__status-select book-card__action" name="status"
+                                            onchange="this.form.submit()">
+                                        <option value="0">
+                                            Не выбрано
+                                        </option>
+                                        <option th:each="status : ${statuses}" th:value="${status.getId()}"
+                                                th:text="${status.getName() == 'PLANNED' ? 'В планах' : (
+                                            status.getName() == 'READING_NOW' ? 'Читаю' : (
+                                            status.getName() == 'DELAYED' ? 'Отложено' : (
+                                            status.getName() == 'READ' ? 'Прочитано' : '')))}"
+                                                th:selected="${user.getStatusNameByBookId(book.id) == status.getName()}">
+                                        </option>
+                                    </select>
                                 </form>
                             </div>
                         </div>

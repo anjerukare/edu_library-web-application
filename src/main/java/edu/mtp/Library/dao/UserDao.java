@@ -24,7 +24,8 @@ public class UserDao {
     private final ResultSetExtractorImpl<User> extractor =
             JdbcTemplateMapperFactory
                     .newInstance()
-                    .addKeys("id", "role_id")
+                    .addKeys("id", "role_id", "favoritebooks_book_id", "statusbooks_book_id",
+                            "statusbooks_status_id")
                     .newResultSetExtractor(User.class);
 
     private final SqlParameterSourceFactory<User> parameterFactory =
@@ -43,6 +44,18 @@ public class UserDao {
 
     @Value("${users.queries.get-by-id}")
     private String GET_BY_ID_QUERY;
+
+    @Value("${users.queries.delete-book-from-favorites}")
+    private String DELETE_BOOK_FROM_FAVORITES_QUERY;
+
+    @Value("${users.queries.insert-book-to-favorites}")
+    private String INSERT_BOOK_TO_FAVORITES_QUERY;
+
+    @Value("${users.queries.delete-status-from-book}")
+    private String DELETE_STATUS_FROM_BOOK_QUERY;
+
+    @Value("${users.queries.insert-status-for-book}")
+    private String INSERT_STATUS_FOR_BOOK_QUERY;
 
     @Autowired
     public UserDao(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -74,5 +87,34 @@ public class UserDao {
                 .addValue("id", id);
         return jdbcTemplate.query(GET_BY_ID_QUERY, parameterSource, extractor)
                 .stream().findAny().orElse(null);
+    }
+
+    public void deleteBookFromFavorites(int userId, int bookId) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("userid", userId)
+                .addValue("bookid", bookId);
+        jdbcTemplate.update(DELETE_BOOK_FROM_FAVORITES_QUERY, parameterSource);
+    }
+
+    public void insertBookToFavorites(int userId, int bookId) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("userid", userId)
+                .addValue("bookid", bookId);
+        jdbcTemplate.update(INSERT_BOOK_TO_FAVORITES_QUERY, parameterSource);
+    }
+
+    public void deleteStatusFromBook(int userId, int bookId) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("userid", userId)
+                .addValue("bookid", bookId);
+        jdbcTemplate.update(DELETE_STATUS_FROM_BOOK_QUERY, parameterSource);
+    }
+
+    public void insertStatusForBook(int userId, int bookId, int statusId) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("userid", userId)
+                .addValue("bookid", bookId)
+                .addValue("statusid", statusId);
+        jdbcTemplate.update(INSERT_STATUS_FOR_BOOK_QUERY, parameterSource);
     }
 }

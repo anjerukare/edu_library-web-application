@@ -49,4 +49,10 @@ class UserDaoTest {
         assertEquals(4, id,
                 "Идентификатор пользователя не совпал с ожидаемым значением");
     }
+
+    @Test
+    void get() {
+        System.out.println(userDao.get(1));
+        System.out.println(userDao.get(2));
+    }
 }

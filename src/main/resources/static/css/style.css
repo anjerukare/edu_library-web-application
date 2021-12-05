@@ -842,6 +842,12 @@
 
 .book-card__title_large {
     font-size: 20px;
+    display: inline;
+}
+
+.book-card__favorite-button {
+    display: inline;
+    margin-left: 8px;
 }
 
 .book-card__authors {
@@ -859,7 +865,7 @@
 }
 
 .book-card__tag {
-    display: flex inline;
+    display: inline-flex;
     width: fit-content;
     background-color: #F7F7FC;
     padding: 7px 16px 7px 12px;
@@ -888,10 +894,15 @@
     margin-top: 16px;
     display: flex;
     flex-flow: row wrap;
+    width: 600px;
 }
 
 .book-card__action {
     margin-right: 8px;
+}
+
+.book-card__status-select {
+    display: inline;
 }
 
 .book-card_large {

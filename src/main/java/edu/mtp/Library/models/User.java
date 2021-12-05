@@ -1,7 +1,10 @@
 package edu.mtp.Library.models;
 
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class User {
 
@@ -14,6 +17,10 @@ public class User {
     private String password;
 
     private Role role;
+
+    private List<FavoriteBook> favoriteBooks = new ArrayList<>();
+
+    private List<StatusBook> statusBooks = new ArrayList<>();
 
     /* Getters, setters, equals, hashCode and toString */
     public int getId() {
@@ -48,17 +55,55 @@ public class User {
         this.role = role;
     }
 
+    public List<FavoriteBook> getFavoriteBooks() {
+        return favoriteBooks;
+    }
+
+    public List<Integer> getFavoriteBooksIds() {
+        return favoriteBooks.stream()
+                .map(FavoriteBook::getBook)
+                .map(Book::getId)
+                .collect(Collectors.toList());
+    }
+
+    public void setFavoriteBooks(List<FavoriteBook> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
+    }
+
+    public List<StatusBook> getStatusBooks() {
+        return statusBooks;
+    }
+
+    public List<Integer> getStatusBooksIds() {
+        return statusBooks.stream()
+                .map(StatusBook::getBook)
+                .map(Book::getId)
+                .collect(Collectors.toList());
+    }
+
+    public String getStatusNameByBookId(int id) {
+        return statusBooks.stream()
+                .filter(statusBook -> statusBook.getBook().getId() == id)
+                .map(StatusBook::getStatus)
+                .map(Status::getName)
+                .findAny().orElse(null);
+    }
+
+    public void setStatusBooks(List<StatusBook> statusBooks) {
+        this.statusBooks = statusBooks;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
+        return id == user.id && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role) && Objects.equals(favoriteBooks, user.favoriteBooks) && Objects.equals(statusBooks, user.statusBooks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, role);
+        return Objects.hash(id, username, password, role, favoriteBooks, statusBooks);
     }
 
     @Override
@@ -68,6 +113,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", favoriteBooks=" + favoriteBooks +
+                ", statusBooks=" + statusBooks +
                 '}';
     }
 }
