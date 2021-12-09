@@ -3,15 +3,18 @@ package edu.mtp.Library.controllers;
 import edu.mtp.Library.dao.UserDao;
 import edu.mtp.Library.models.Role;
 import edu.mtp.Library.models.User;
+import edu.mtp.Library.util.UserReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
 
 @Controller
 public class UserController {
@@ -51,5 +54,15 @@ public class UserController {
         userDao.add(user);
 
         return "redirect:/signin";
+    }
+
+    @GetMapping("/users/{username}/userinfo")
+    @PreAuthorize("authentication.principal.username == #username")
+    @ResponseBody
+    public FileSystemResource getUserInfo(@PathVariable String username, HttpServletResponse response) {
+        File file = UserReport.generate(userDao.get(userDao.getIdByUsername(username)));
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=" + username + ".csv");
+        return new FileSystemResource(file);
     }
 }
