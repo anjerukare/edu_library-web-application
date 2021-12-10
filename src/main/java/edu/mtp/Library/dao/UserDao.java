@@ -24,8 +24,8 @@ public class UserDao {
     private final ResultSetExtractorImpl<User> extractor =
             JdbcTemplateMapperFactory
                     .newInstance()
-                    .addKeys("id", "role_id", "favoritebooks_book_id", "statusbooks_book_id",
-                            "statusbooks_status_id")
+                    .addKeys("id", "role_id", "favoritebooks_book_id", "favoritebooks_book_authors_id",
+                            "statusbooks_book_id", "statusbooks_status_id")
                     .newResultSetExtractor(User.class);
 
     private final SqlParameterSourceFactory<User> parameterFactory =

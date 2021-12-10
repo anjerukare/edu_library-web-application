@@ -89,6 +89,13 @@ public class User {
                 .findAny().orElse(null);
     }
 
+    public long getStatusBooksCountByStatusName(String statusName) {
+        return statusBooks.stream()
+                .map(StatusBook::getStatus)
+                .filter(status -> status.getName().equals(statusName))
+                .count();
+    }
+
     public void setStatusBooks(List<StatusBook> statusBooks) {
         this.statusBooks = statusBooks;
     }

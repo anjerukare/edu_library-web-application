@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${#authentication.getName() == user.getUsername() ? 'Мой профиль' :
+              'Профиль ' + user.getUsername()}"></title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    </head>
+    <body class="page">
+        <header th:replace="fragments/header :: header">
+            /* Магия шаблонизатора */
+        </header>
+        <div class="header-separator" th:style="'background-position-y: -' + ${random % 1092} + 'px'"></div>
+        <div class="body">
+            <section class="profile-section">
+                <div class="profile-section__inner">
+                    <h2 class="title profile-section__name" th:text="${user.getUsername()}"></h2>
+                    <div class="favorite-books" th:if="!${#lists.isEmpty(user.getFavoriteBooks())}">
+                        <h2 class="title favorite-books__title">Избранные книги</h2>
+                        <ul class="catalog">
+                            <li class="book-card" th:each="favoriteBook : ${user.getFavoriteBooks()}">
+                                <a class="book-card__link"
+                                   th:href="@{/books/{id}(id=${favoriteBook.getBook().getId()})}"
+                                   tabindex="-1">
+                                    <img class="book-card__cover"
+                                         th:src="@{{coverUrl}(coverUrl=${favoriteBook.getBook().getCoverUrl()})}"
+                                         onerror="this.src='/img/null-cover.png'"/>
+                                </a>
+                                <div class="book-card__description">
+                                    <a class="link book-card__title"
+                                       th:href="@{/books/{id}(id=${favoriteBook.getBook().getId()})}"
+                                       th:text="${favoriteBook.getBook().getName()}">
+                                    </a>
+                                    <span class="book-card__authors">
+                                    <span th:each="author, iterStatus : ${favoriteBook.getBook().getAuthors()}"
+                                          th:text="!${iterStatus.last} ?
+                                              ${author.getFullName(true)} + ', ' :
+                                              ${author.getFullName(true)}"></span>
+                                </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="status-books" th:if="!${#lists.isEmpty(user.getStatusBooks())}">
+                        <h2 class="title status-books__title">Статистика</h2>
+                        <span class="status-books__status"
+                              th:if="${user.getStatusBooksCountByStatusName('PLANNED') != 0}"
+                              th:text="${'В планах: ' + user.getStatusBooksCountByStatusName('PLANNED')}"></span>
+                        <span class="status-books__status"
+                              th:if="${user.getStatusBooksCountByStatusName('READING_NOW') != 0}"
+                              th:text="${'Читаю: ' + user.getStatusBooksCountByStatusName('READING_NOW')}"></span>
+                        <span class="status-books__status"
+                              th:if="${user.getStatusBooksCountByStatusName('DELAYED') != 0}"
+                              th:text="${'Отложено: ' + user.getStatusBooksCountByStatusName('DELAYED')}"></span>
+                        <span class="status-books__status"
+                              th:if="${user.getStatusBooksCountByStatusName('QUIT') != 0}"
+                              th:text="${'Брошено: ' + user.getStatusBooksCountByStatusName('QUIT')}"></span>
+                        <span class="status-books__status"
+                              th:if="${user.getStatusBooksCountByStatusName('READ') != 0}"
+                              th:text="${'Прочитано: ' + user.getStatusBooksCountByStatusName('READ')}"></span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

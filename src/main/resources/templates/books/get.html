@@ -79,7 +79,8 @@
                                                 th:text="${status.getName() == 'PLANNED' ? 'В планах' : (
                                             status.getName() == 'READING_NOW' ? 'Читаю' : (
                                             status.getName() == 'DELAYED' ? 'Отложено' : (
-                                            status.getName() == 'READ' ? 'Прочитано' : '')))}"
+                                            status.getName() == 'QUIT' ? 'Брошено' : (
+                                            status.getName() == 'READ' ? 'Прочитано' : ''))))}"
                                                 th:selected="${user.getStatusNameByBookId(book.id) == status.getName()}">
                                         </option>
                                     </select>

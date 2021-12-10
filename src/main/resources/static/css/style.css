@@ -34,6 +34,12 @@
     position: relative;
 }
 
+.header-separator {
+    background: url("/img/pattern.png") #F7F7FC;
+    background-size: cover;
+    height: 110px;
+}
+
 /* Блок пользователя */
 .user {
     display: flex;
@@ -170,6 +176,22 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Профиль пользователя */
+.profile-section__inner {
+    width: 1192px;
+    margin: 0 auto;
+    padding: 0 52px 48px;
+}
+
+.title {
+    font-size: 32px;
+    padding: 40px 0 32px 0;
+}
+
+.status-books__status {
+    margin-right: 16px;
 }
 
 /* Триггер всплывающего окна */

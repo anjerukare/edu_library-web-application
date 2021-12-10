@@ -9,18 +9,24 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
+import java.util.Random;
+
+import static java.lang.Math.abs;
 
 @Controller
 public class UserController {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
+
+    private final static Random random = new Random();
 
     @Autowired
     public UserController(UserDao userDao, PasswordEncoder passwordEncoder) {
@@ -54,6 +60,14 @@ public class UserController {
         userDao.add(user);
 
         return "redirect:/signin";
+    }
+
+    @GetMapping("/users/{username}")
+    @PreAuthorize("isAuthenticated()")
+    public String getUserProfile(@PathVariable String username, Model model) {
+        model.addAttribute("user", userDao.get(userDao.getIdByUsername(username)));
+        model.addAttribute("random", abs(random.nextInt()));
+        return "users/profile";
     }
 
     @GetMapping("/users/{username}/userinfo")
