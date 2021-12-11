@@ -14,3 +14,9 @@ insert into public.tags (name, description) values ('Трагедия', 'Пов�
 insert into public.tags (name, description) values ('Драма', 'Построенный на диалогах сюжет о личной жизни главного героя');
 insert into public.tags (name, description) values ('Поэма', 'Развёрнутое описание масштабных событий');
 insert into public.tags (name, description) values ('Стихотворение', 'Описание события, либо чувств и внутреннего мира персонажа');
+
+insert into public.statuses (id, name) values (1, 'PLANNED');
+insert into public.statuses (id, name) values (2, 'READING_NOW');
+insert into public.statuses (id, name) values (3, 'DELAYED');
+insert into public.statuses (id, name) values (4, 'QUIT');
+insert into public.statuses (id, name) values (5, 'READ');

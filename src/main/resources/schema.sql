@@ -30,7 +30,7 @@ create table if not exists tags
         constraint pk_tags
             primary key,
     name varchar(16) not null,
-    description varchar(32)
+    description varchar(64)
 );
 
 alter table tags owner to postgres;
@@ -53,6 +53,12 @@ create table if not exists users
 
 alter table users owner to postgres;
 
+create unique index if not exists users_pk
+    on users (id);
+
+create index if not exists r_users_have_role_fk
+    on users (roleid);
+
 create table if not exists authors
 (
     id serial
@@ -65,12 +71,12 @@ create table if not exists authors
         constraint fk_authors_r_users_p_users
             references users
             on update restrict on delete restrict,
-    createdate date not null,
+    createdate date default now() not null,
     moderatorid integer
         constraint fk_authors_r_moderat_users
             references users
             on update restrict on delete restrict,
-    published boolean not null
+    published boolean default false not null
 );
 
 alter table authors owner to postgres;
@@ -106,6 +112,15 @@ create table if not exists books
 );
 
 alter table books owner to postgres;
+
+create unique index if not exists books_pk
+    on books (id);
+
+create index if not exists r_user_create_books_fk
+    on books (publisherid);
+
+create index if not exists r_moderator_publish_book_fk
+    on books (moderatorid);
 
 create table if not exists bookauthors
 (
@@ -146,7 +161,7 @@ create table if not exists bookstatuses
         constraint fk_bookstat_r_book_st_statuses
             references statuses
             on update restrict on delete restrict,
-    date date not null,
+    date date default now() not null,
     constraint pk_bookstatuses
         primary key (userid, bookid)
 );
@@ -190,15 +205,6 @@ create index if not exists r_books_have_tags_fk
 create index if not exists r_books_have_tags2_fk
     on booktags (tagid);
 
-create unique index if not exists books_pk
-    on books (id);
-
-create index if not exists r_user_create_books_fk
-    on books (publisherid);
-
-create index if not exists r_moderator_publish_book_fk
-    on books (moderatorid);
-
 create table if not exists favoritebooks
 (
     userid integer not null
@@ -209,7 +215,7 @@ create table if not exists favoritebooks
         constraint fk_favorite_r_books_c_books
             references books
             on update restrict on delete restrict,
-    date date not null,
+    date date default now() not null,
     constraint pk_favoritebooks
         primary key (userid, bookid)
 );
@@ -264,7 +270,7 @@ create table if not exists topic
             references users
             on update restrict on delete restrict,
     name varchar(64) not null,
-    date date not null
+    date date default now() not null
 );
 
 alter table topic owner to postgres;
@@ -289,7 +295,7 @@ create table if not exists topicreplies
             references users
             on update restrict on delete restrict,
     text varchar(1024) not null,
-    date date not null
+    date date default now() not null
 );
 
 alter table topicreplies owner to postgres;
@@ -302,9 +308,3 @@ create index if not exists r_users_publish_replies_fk
 
 create index if not exists r_topics_contain_replies_fk
     on topicreplies (topicid);
-
-create unique index if not exists users_pk
-    on users (id);
-
-create index if not exists r_users_have_role_fk
-    on users (roleid);
