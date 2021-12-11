@@ -5,11 +5,11 @@ import edu.mtp.Library.dao.BookDao;
 import edu.mtp.Library.dao.UserDao;
 import edu.mtp.Library.models.Author;
 import edu.mtp.Library.models.Book;
+import edu.mtp.Library.models.User;
 import edu.mtp.Library.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +46,9 @@ public class MainController {
         List<Author> authors = authorDao.getAll();
         authors.sort(Comparator.comparing(Author::getFullName));
         model.addAttribute("authors", authors);
+        List<User> users = userDao.getAll();
+        users.sort(Comparator.comparing(User::getUsername));
+        model.addAttribute("users", users);
         model.addAttribute("random", abs(random.nextInt()));
 
         return "index";

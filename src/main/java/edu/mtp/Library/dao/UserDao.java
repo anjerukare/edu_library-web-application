@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -41,6 +42,9 @@ public class UserDao {
 
     @Value("${users.queries.get-id-by-username}")
     private String GET_ID_BY_USERNAME_QUERY;
+
+    @Value("${users.queries.get-all}")
+    private String GET_ALL_QUERY;
 
     @Value("${users.queries.get-by-id}")
     private String GET_BY_ID_QUERY;
@@ -83,6 +87,10 @@ public class UserDao {
         Optional<Integer> userId = jdbcTemplate.query(GET_ID_BY_USERNAME_QUERY,
                 parameterSource, new SingleColumnRowMapper<>(Integer.class)).stream().findAny();
         return userId.orElse(null);
+    }
+
+    public List<User> getAll() {
+        return jdbcTemplate.query(GET_ALL_QUERY, extractor);
     }
 
     public User get(int id) {

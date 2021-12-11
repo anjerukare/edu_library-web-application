@@ -51,6 +51,11 @@ class UserDaoTest {
     }
 
     @Test
+    void getAll() {
+        userDao.getAll().forEach(System.out::println);
+    }
+
+    @Test
     void get() {
         System.out.println(userDao.get(1));
         System.out.println(userDao.get(2));

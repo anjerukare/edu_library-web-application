@@ -76,19 +76,35 @@
                         </a>
                     </h2>
                     <ul class="catalog">
-                        <li class="author-card" th:each="author : ${authors}">
-                            <span class="author-card__title" th:text="${author.getFullName(true)}"
+                        <li class="card" th:each="author : ${authors}">
+                            <span class="card__title" th:text="${author.getFullName(true)}"
                                   th:title="${author.getPatronymic() != null} ? ${author.getFullName()}"></span>
-                            <div class="author-card__actions" sec:authorize="hasRole('ROLE_ADMIN')">
-                                <a class="link author-card__action" th:href="@{/authors/{id}/edit(id=${author.getId()})}">
+                            <div class="card__actions" sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="link card__action" th:href="@{/authors/{id}/edit(id=${author.getId()})}">
                                     Править
                                 </a>
                                 <form th:method="delete" th:action="@{/authors/{id}(id=${author.getId()})}"
                                       sec:authorize="hasRole('ROLE_ADMIN')">
-                                    <input class="link author-card__action" type="submit"
+                                    <input class="link card__action" type="submit"
                                            value="Удалить"/>
                                 </form>
                             </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section class="item-section">
+                <div class="item-section__inner">
+                    <h2 class="item-section__title">
+                        Пользователи
+                    </h2>
+                    <ul class="catalog">
+                        <li class="card" th:each="user : ${users}">
+                            <a class="link card__title" th:text="${user.getUsername()}"
+                               th:href="@{/users/{username}(username=${user.getUsername()})}"></a>
+                            <span class="role" th:text="${user.getRole().getName() == 'ROLE_READER' ? 'Читатель' : (
+                                user.getRole().getName() == 'ROLE_MODERATOR' ? 'Модератор' : (
+                                user.getRole().getName() == 'ROLE_ADMIN' ? 'Администратор' : ''))}"></span>
                         </li>
                     </ul>
                 </div>

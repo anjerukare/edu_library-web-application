@@ -946,15 +946,15 @@
     height: unset;
 }
 
-/* Карточка автора */
-.author-card {
+/* Карточка */
+.card {
     border-radius: 16px;
     width: 236px;
     padding: 18px 24px;
     box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
 }
 
-.author-card__title {
+.card__title {
     font-weight: bold;
     display: block;
     white-space: nowrap;
@@ -963,12 +963,12 @@
     font-size: 18px;
 }
 
-.author-card__actions {
+.card__actions {
     margin-top: 10px;
     display: flex;
 }
 
-.author-card__action {
+.card__action {
     margin-right: 16px;
     padding: 0;
     background: none;
@@ -977,7 +977,7 @@
     transition: color ease-out 0.2s;
 }
 
-.author-card__action:hover {
+.card__action:hover {
     color: #2A00A2;
 }
 
