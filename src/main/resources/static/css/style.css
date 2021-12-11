@@ -185,9 +185,21 @@
     padding: 0 52px 48px;
 }
 
+.profile-action {
+    margin-right: 8px;
+}
+
 .title {
     font-size: 32px;
     padding: 40px 0 32px 0;
+}
+
+.title-block {
+    padding: 40px 0 32px 0;
+}
+
+.title-block__title {
+    padding: 0 0 10px;
 }
 
 .status-books__status {

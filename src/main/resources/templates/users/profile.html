@@ -17,7 +17,24 @@
         <div class="body">
             <section class="profile-section">
                 <div class="profile-section__inner">
-                    <h2 class="title profile-section__name" th:text="${user.getUsername()}"></h2>
+                    <div class="title-block">
+                        <h2 class="title title-block__title profile-section__name" th:text="${user.getUsername()}"></h2>
+                        <span class="role" th:text="${user.getRole().getName() == 'ROLE_READER' ? 'Читатель' : (
+                            user.getRole().getName() == 'ROLE_MODERATOR' ? 'Модератор' : (
+                            user.getRole().getName() == 'ROLE_ADMIN' ? 'Администратор' : ''))}"></span>
+                    </div>
+                    <div class="profile-actions">
+                        <a class="button button_subtle profile-action"
+                           th:if="${#authentication.name == user.getUsername()}"
+                           th:href="@{/users/{username}/edit(username=${user.getUsername()})}">
+                            Сменить пароль
+                        </a>
+                        <a class="button button_subtle profile-action"
+                           th:if="${#authentication.name == user.getUsername()}"
+                           th:href="@{/users/{username}/download(username=${user.getUsername()})}">
+                            Выгрузить данные
+                        </a>
+                    </div>
                     <div class="favorite-books" th:if="!${#lists.isEmpty(user.getFavoriteBooks())}">
                         <h2 class="title favorite-books__title">Избранные книги</h2>
                         <ul class="catalog">

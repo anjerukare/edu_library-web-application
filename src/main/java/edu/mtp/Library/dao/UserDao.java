@@ -45,6 +45,9 @@ public class UserDao {
     @Value("${users.queries.get-by-id}")
     private String GET_BY_ID_QUERY;
 
+    @Value("${users.queries.update-user}")
+    private String UPDATE_USER_QUERY;
+
     @Value("${users.queries.delete-book-from-favorites}")
     private String DELETE_BOOK_FROM_FAVORITES_QUERY;
 
@@ -87,6 +90,10 @@ public class UserDao {
                 .addValue("id", id);
         return jdbcTemplate.query(GET_BY_ID_QUERY, parameterSource, extractor)
                 .stream().findAny().orElse(null);
+    }
+
+    public void save(User user) {
+        jdbcTemplate.update(UPDATE_USER_QUERY, parameterFactory.newSqlParameterSource(user));
     }
 
     public void deleteBookFromFavorites(int userId, int bookId) {

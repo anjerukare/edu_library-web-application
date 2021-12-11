@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Сменить пароль</title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    </head>
+    <body class="page">
+        <form class="edit-user-password-form" th:method="patch" th:action="@{/users/{username}(username=${user.getUsername()})}"
+              th:object="${user}" novalidate>
+            <div class="form__inner">
+                <h1 class="form__title">Смена пароля</h1>
+                <div class="input form__input"
+                     th:classappend="${#fields.hasErrors('password')? 'input_error' : ''}">
+                    <input class="input__field input__field_contains_button-clear
+                                  input__field_contains_label"
+                           type="password" placeholder="Новый пароль"
+                           th:field="*{password}" required autofocus/>
+                    <button class="input__button-clear" type="button" tabindex="-1"
+                            onclick="this.previousElementSibling.value = ''"></button>
+                    <label class="input__label">Новый пароль</label>
+                    <div class="error-label input__error-label" th:if="${#fields.hasErrors('password')}"
+                         th:errors="*{password}"></div>
+                </div>
+                <div class="form__actions">
+                    <input class="button form__action" type="submit" value="Сменить"/>
+                    <a class="button button_subtle form__action" th:href="@{/}">Отмена</a>
+                </div>
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{role.id}" th:value="*{role.id}">
+            </div>
+        </form>
+    </body>
+</html>

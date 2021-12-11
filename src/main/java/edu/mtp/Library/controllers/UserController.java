@@ -70,7 +70,26 @@ public class UserController {
         return "users/profile";
     }
 
-    @GetMapping("/users/{username}/userinfo")
+    @GetMapping("/users/{username}/edit")
+    @PreAuthorize("authentication.principal.username == #username")
+    public String editUser(@PathVariable String username, Model model) {
+        model.addAttribute("user", userDao.get(userDao.getIdByUsername(username)));
+        return "users/edit";
+    }
+
+    @PatchMapping("/users/{username}")
+    @PreAuthorize("authentication.principal.username == #username")
+    public String setUser(@PathVariable String username, @ModelAttribute @Valid User user,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "users/edit";
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDao.save(user);
+        return "redirect:/users/{username}";
+    }
+
+    @GetMapping("/users/{username}/download")
     @PreAuthorize("authentication.principal.username == #username")
     @ResponseBody
     public FileSystemResource getUserInfo(@PathVariable String username, HttpServletResponse response) {
