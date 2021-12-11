@@ -24,6 +24,12 @@
                             user.getRole().getName() == 'ROLE_ADMIN' ? 'Администратор' : ''))}"></span>
                     </div>
                     <div class="profile-actions">
+                        <form th:method="post" th:action="@{/users/{username}/moderator(username=${user.getUsername()})}"
+                              th:if="${#strings.equals(user.getRole().getName(), 'ROLE_READER')}"
+                              sec:authorize="hasRole('ROLE_ADMIN')">
+                            <input class="button button_subtle book-card__action"
+                                   type="submit" value="Сделать модератором"/>
+                        </form>
                         <a class="button button_subtle profile-action"
                            th:if="${#authentication.name == user.getUsername()}"
                            th:href="@{/users/{username}/edit(username=${user.getUsername()})}">

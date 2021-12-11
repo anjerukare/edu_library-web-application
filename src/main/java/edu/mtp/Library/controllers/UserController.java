@@ -89,6 +89,17 @@ public class UserController {
         return "redirect:/users/{username}";
     }
 
+    @PostMapping("/users/{username}/moderator")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String setModeratorRole(@PathVariable String username) {
+        User user = userDao.get(userDao.getIdByUsername(username));
+        Role moderatorRole = new Role();
+        moderatorRole.setId(2);
+        user.setRole(moderatorRole);
+        userDao.save(user);
+        return "redirect:/users/{username}";
+    }
+
     @GetMapping("/users/{username}/download")
     @PreAuthorize("authentication.principal.username == #username")
     @ResponseBody
