@@ -63,6 +63,15 @@ public class BookDao {
     @Value("${books.query-pieces.delete-junctions-with-authors}")
     private String DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE;
 
+    @Value("${books.queries.set-published}")
+    private String SET_PUBLISHED_QUERY;
+
+    @Value("${books.query-pieces.delete-book-form-favorites}")
+    private String DELETE_BOOK_FROM_FAVORITES_QUERY_PIECES;
+
+    @Value("${books.query-pieces.delete-statuses-from-book}")
+    private String DELETE_STATUSES_FROM_BOOK_QUERY_PIECES;
+
     @Value("${books.query-pieces.delete-book}")
     private String DELETE_BOOK_QUERY_PIECE;
 
@@ -72,7 +81,13 @@ public class BookDao {
     }
 
     public List<Book> getAll() {
-        return jdbcTemplate.query(GET_ALL_QUERY, extractor);
+        return getAll(true);
+    }
+
+    public List<Book> getAll(boolean published) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("published", published);
+        return jdbcTemplate.query(GET_ALL_QUERY, parameterSource, extractor);
     }
 
     public void add(Book book) {
@@ -119,10 +134,18 @@ public class BookDao {
         return builder.toString();
     }
 
+    public void setPublished(int id, int moderatorId) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("moderatorid", moderatorId);
+        jdbcTemplate.update(SET_PUBLISHED_QUERY, parameterSource);
+    }
+
     public void delete(int id) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE +
+        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_BOOK_FROM_FAVORITES_QUERY_PIECES +
+                DELETE_STATUSES_FROM_BOOK_QUERY_PIECES + DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE +
                 DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE, parameterSource);
     }
 }

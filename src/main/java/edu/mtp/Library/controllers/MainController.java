@@ -8,6 +8,7 @@ import edu.mtp.Library.models.Book;
 import edu.mtp.Library.models.User;
 import edu.mtp.Library.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,5 +68,14 @@ public class MainController {
         model.addAttribute("q", query);
 
         return "search";
+    }
+
+    @GetMapping("/requests")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    public String getRequests(Model model) {
+        model.addAttribute("books", bookDao.getAll(false));
+        model.addAttribute("authors", authorDao.getAll(false));
+        model.addAttribute("random", abs(random.nextInt()));
+        return "books/requests";
     }
 }

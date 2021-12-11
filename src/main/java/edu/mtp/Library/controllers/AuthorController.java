@@ -70,6 +70,15 @@ public class AuthorController {
         return "redirect:/";
     }
 
+    @PostMapping("/{id}/publish")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    public String setAuthorPublished(@PathVariable int id, Principal principal) {
+        Integer moderatorId = userDao.getIdByUsername(principal.getName());
+        authorDao.setPublished(id, moderatorId);
+
+        return "redirect:/requests";
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteAuthor(@PathVariable int id, RedirectAttributes redirectAttributes) {

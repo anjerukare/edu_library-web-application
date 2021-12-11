@@ -49,6 +49,9 @@ public class AuthorDao {
     @Value("${authors.queries.has-books}")
     private String HAS_BOOKS_QUERY;
 
+    @Value("${authors.queries.set-published}")
+    private String SET_PUBLISHED_QUERY;
+
     @Value("${authors.queries.delete}")
     private String DELETE_QUERY;
 
@@ -58,7 +61,13 @@ public class AuthorDao {
     }
 
     public List<Author> getAll() {
-        return jdbcTemplate.query(GET_ALL_QUERY, extractor);
+        return getAll(true);
+    }
+
+    public List<Author> getAll(boolean published) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("published", published);
+        return jdbcTemplate.query(GET_ALL_QUERY, parameterSource, extractor);
     }
 
     public void add(Author author) {
@@ -82,6 +91,13 @@ public class AuthorDao {
         Optional<Boolean> hasBooks = jdbcTemplate.query(HAS_BOOKS_QUERY,
                 parameterSource, new SingleColumnRowMapper<>(Boolean.class)).stream().findAny();
         return hasBooks.orElse(false);
+    }
+
+    public void setPublished(int id, int moderatorId) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("moderatorid", moderatorId);
+        jdbcTemplate.update(SET_PUBLISHED_QUERY, parameterSource);
     }
 
     public void delete(int id) {

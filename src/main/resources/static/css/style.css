@@ -125,6 +125,10 @@
     cursor: pointer;
 }
 
+.menu {
+    padding: 4px 0;
+}
+
 .menu__link {
     border: inherit;
     padding: inherit;
@@ -144,17 +148,9 @@
 
 .menu__item {
     display: block;
-    padding: 12px 20px;
+    padding: 8px 20px;
     width: 100%;
     text-align: inherit;
-}
-
-.menu__item:first-child {
-    border-radius: 8px 8px 0 0;
-}
-
-.menu__item:last-child {
-    border-radius: 0 0 8px 8px;
 }
 
 .menu__separator {

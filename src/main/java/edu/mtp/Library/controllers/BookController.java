@@ -84,6 +84,15 @@ public class BookController {
         return "redirect:/books/{id}";
     }
 
+    @PostMapping("/{id}/publish")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    public String setBookPublished(@PathVariable int id, Principal principal) {
+        Integer moderatorId = userDao.getIdByUsername(principal.getName());
+        bookDao.setPublished(id, moderatorId);
+
+        return "redirect:/requests";
+    }
+
     @GetMapping("/new")
     @PreAuthorize("isAuthenticated()")
     public String newBook(@ModelAttribute Book book, Model model) {

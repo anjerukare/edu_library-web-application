@@ -27,7 +27,7 @@
                                   th:text="${book.getName()}"></span>
                             <form class="book-card__favorite-button" th:method="post"
                                   th:action="@{/books/{id}/favorite(id=${book.getId()})}"
-                                  sec:authorize="isAuthenticated()">
+                                  sec:authorize="isAuthenticated()" th:if="${book.isPublished()}">
                                 <input type="checkbox" value="true" id="favorite" name="favorite"
                                        onchange="this.form.submit()"
                                        th:checked="${#lists.contains(user.getFavoriteBooksIds(), book.id)}"/>
@@ -50,8 +50,13 @@
                             </div>
                             <p class="book-card__annotation" th:text="${book.getAnnotation()}"></p>
                             <div class="book-card__actions">
+                                <form th:method="post" th:action="@{/books/{id}/publish(id=${book.getId()})}"
+                                      sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')" th:if="${!book.isPublished()}">
+                                    <input class="button book-card__action"
+                                           type="submit" value="Добавить"/>
+                                </form>
                                 <a class="button book-card__action"
-                                   th:if="${book.getBookUrl() != ''}"
+                                   th:if="${book.getBookUrl() != '' && book.isPublished()}"
                                    th:target="${#authorization.expression('isAuthenticated()') ?
                                                 '_blank' : '_self'}"
                                    th:href="${#authorization.expression('isAuthenticated()') ?
@@ -59,17 +64,21 @@
                                     Читать
                                 </a>
                                 <a class="button button_subtle book-card__action"
-                                   sec:authorize="hasRole('ROLE_ADMIN')"
+                                   th:if="${!book.isPublished() &&
+                                       #authorization.expr('hasAnyRole(''ROLE_MODERATOR'', ''ROLE_ADMIN'')') ||
+                                       book.isPublished() && #authorization.expr('hasRole(''ROLE_ADMIN'')')}"
                                    th:href="@{/books/{id}/edit(id=${book.getId()})}">
                                     Править
                                 </a>
                                 <form th:method="delete" th:action="@{/books/{id}(id=${book.getId()})}"
-                                      sec:authorize="hasRole('ROLE_ADMIN')">
+                                      th:if="${!book.isPublished() &&
+                                       #authorization.expr('hasAnyRole(''ROLE_MODERATOR'', ''ROLE_ADMIN'')') ||
+                                       book.isPublished() && #authorization.expr('hasRole(''ROLE_ADMIN'')')}">
                                     <input class="button button_subtle book-card__action"
                                            type="submit" value="Удалить"/>
                                 </form>
                                 <form th:method="post" th:action="@{/books/{id}/status(id=${book.getId()})}"
-                                      sec:authorize="isAuthenticated()">
+                                      sec:authorize="isAuthenticated()" th:if="${book.isPublished()}">
                                     <select class="book-card__status-select book-card__action" name="status"
                                             onchange="this.form.submit()">
                                         <option value="0">

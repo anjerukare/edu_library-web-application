@@ -104,7 +104,6 @@
                     <input class="button form__action" type="submit" value="Изменить"/>
                     <a class="button button_subtle form__action" th:href="@{/books/{id}(id=${book.getId()})}">Отмена</a>
                 </div>
-                <input type="hidden" th:field="*{publisher.id}" th:value="*{publisher.id}">
             </div>
         </form>
     </body>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8">
+        <title>Заявки</title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    </head>
+    <body class="page">
+        <header th:replace="fragments/header :: header">
+            /* Магия шаблонизатора */
+        </header>
+        <div class="header-separator" th:style="'background-position-y: -' + ${random % 1092} + 'px'"></div>
+        <div class="body">
+            <section class="item-section">
+                <div class="item-section__inner">
+                    <h2 class="item-section__title">
+                        Неопубликованные книги
+                    </h2>
+                    <span th:if="${#lists.isEmpty(books)}">
+                        Пусто, все заявки на публикацию книг были закрыты
+                    </span>
+                    <ul class="catalog">
+                        <li class="book-card" th:each="book : ${books}">
+                            <a class="book-card__link"
+                               th:href="@{/books/{id}(id=${book.getId()})}"
+                               tabindex="-1">
+                                <img class="book-card__cover"
+                                     th:src="@{{coverUrl}(coverUrl=${book.getCoverUrl()})}"
+                                     onerror="this.src='/img/null-cover.png'"/>
+                            </a>
+                            <div class="book-card__description">
+                                <a class="link book-card__title"
+                                   th:href="@{/books/{id}(id=${book.getId()})}"
+                                   th:text="${book.getName()}">
+                                </a>
+                                <span class="book-card__authors">
+                                    <span th:each="author, iterStatus : ${book.getAuthors()}"
+                                          th:text="!${iterStatus.last} ?
+                                              ${author.getFullName(true)} + ', ' :
+                                              ${author.getFullName(true)}"></span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section class="item-section">
+                <div class="item-section__inner">
+                    <h2 class="item-section__title">
+                        Неопубликованные авторы
+                    </h2>
+                    <span th:if="${#lists.isEmpty(authors)}">
+                        Пусто, все заявки на публикацию авторов были закрыты
+                    </span>
+                    <ul class="catalog">
+                        <li class="card" th:each="author : ${authors}">
+                            <span class="card__title" th:text="${author.getFullName(true)}"
+                                  th:title="${author.getPatronymic() != null} ? ${author.getFullName()}"></span>
+                            <div class="card__actions">
+                                <form th:method="post" th:action="@{/authors/{id}/publish(id=${author.getId()})}">
+                                    <input class="link card__action" type="submit" value="Добавить"/>
+                                </form>
+                                <form th:method="delete" th:action="@{/authors/{id}(id=${author.getId()})}">
+                                    <input class="link card__action" type="submit" value="Удалить"/>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

@@ -23,16 +23,24 @@
                     <div class="popup">
                         <label class="popup__closing-overlay" for="popup-userinfo"></label>
                         <div class="menu popup__menu">
-                            <a class="link menu__link menu__item"
-                               th:href="@{/users/{username}(username=${#authentication.getName()})}">
+                            <div class="menu__item">
                                 <div class="username" sec:authentication="name"></div>
                                 <div class="role">
                                     <span sec:authorize="hasRole('ROLE_READER')">Читатель</span>
                                     <span sec:authorize="hasRole('ROLE_MODERATOR')">Модератор</span>
                                     <span sec:authorize="hasRole('ROLE_ADMIN')">Администратор</span>
                                 </div>
-                            </a>
+                            </div>
                             <div class="menu__separator"></div>
+                            <a class="link menu__link menu__item"
+                               th:href="@{/users/{username}(username=${#authentication.getName()})}">
+                                Мой профиль
+                            </a>
+                            <a class="link menu__link menu__item"
+                               th:href="@{/requests}"
+                               sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
+                                Заявки
+                            </a>
                             <form th:method="post" th:action="@{/signout}">
                                 <input class="link menu__link menu__item" type="submit"
                                        value="Выйти">
