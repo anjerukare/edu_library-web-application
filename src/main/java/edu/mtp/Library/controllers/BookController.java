@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Random;
 
+import static edu.mtp.Library.util.SecurityUtils.hasAnyRole;
 import static java.lang.Math.abs;
 
 @Controller
@@ -104,16 +105,22 @@ public class BookController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public String addBook(@ModelAttribute @Valid Book book, BindingResult bindingResult,
-                          Model model, Principal principal) {
+                          Model model, @CurrentSecurityContext SecurityContext securityContext) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("allAuthors", authorDao.getAll());
             model.addAttribute("allTags", tagDao.getAll());
             return "books/new";
         }
 
+        Authentication authentication = securityContext.getAuthentication();
         User publisher = new User();
-        publisher.setId(userDao.getIdByUsername(principal.getName()));
+        publisher.setId(userDao.getIdByUsername(authentication.getName()));
         book.setPublisher(publisher);
+
+        if (hasAnyRole(authentication, "ROLE_MODERATOR", "ROLE_ADMIN")) {
+            book.setModerator(publisher);
+            book.setPublished(true);
+        }
 
         bookDao.add(book);
         return "redirect:/";
@@ -144,7 +151,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     public String deleteBook(@PathVariable int id) {
         bookDao.delete(id);
         return "redirect:/";

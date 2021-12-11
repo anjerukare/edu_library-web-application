@@ -8,6 +8,9 @@ import edu.mtp.Library.util.Response;
 import edu.mtp.Library.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import static edu.mtp.Library.util.SecurityUtils.hasAnyRole;
 
 @Controller
 @RequestMapping("/authors")
@@ -39,13 +44,19 @@ public class AuthorController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public String addAuthor(@ModelAttribute @Valid Author author, BindingResult bindingResult,
-                            Principal principal) {
+                            @CurrentSecurityContext SecurityContext securityContext) {
         if (bindingResult.hasErrors())
             return "authors/new";
 
+        Authentication authentication = securityContext.getAuthentication();
         User publisher = new User();
-        publisher.setId(userDao.getIdByUsername(principal.getName()));
+        publisher.setId(userDao.getIdByUsername(authentication.getName()));
         author.setPublisher(publisher);
+
+        if (hasAnyRole(authentication, "ROLE_MODERATOR", "ROLE_ADMIN")) {
+            author.setModerator(publisher);
+            author.setPublished(true);
+        }
 
         authorDao.add(author);
         return "redirect:/";
@@ -80,7 +91,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     public String deleteAuthor(@PathVariable int id, RedirectAttributes redirectAttributes) {
         if (authorDao.hasBooks(id)) {
             redirectAttributes.addFlashAttribute(new Response(Result.ERROR,
