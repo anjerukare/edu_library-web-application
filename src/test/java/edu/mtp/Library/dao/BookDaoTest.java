@@ -85,7 +85,7 @@ class BookDaoTest {
 
     @Test
     void get() {
-        System.out.println(bookDao.get(2));
+        System.out.println(bookDao.get(1));
     }
 
     @Test

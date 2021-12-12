@@ -215,7 +215,18 @@
     margin-top: 16px;
 }
 
+.comment-block__header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
 .comment-block__date {
+    margin-top: 8px;
+}
+
+.comment-block__score {
+    color: #6E7191;
     margin-top: 8px;
 }
 
@@ -314,6 +325,10 @@
     padding: 17px 25px 17px 24px;
     border: none;
     border-radius: 16px;
+}
+
+.input__field_small {
+    width: 180px;
 }
 
 .input__field:required {
@@ -1137,4 +1152,8 @@
 
 .add-book-form__action {
     margin-top: 16px;
+}
+
+.reviews__title {
+    padding-top: 0;
 }

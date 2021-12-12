@@ -99,6 +99,32 @@
                     </div>
                 </div>
             </section>
+            <section class="section reviews">
+                <div class="section__inner">
+                    <h2 class="title reviews__title">
+                        Рецензии
+                        <a class="button button_icon button_secondary item-section__add-item"
+                           th:href="@{/books/{id}/reviews/new(id=${book.getId()})}"
+                           sec:authorize="isAuthenticated()">
+                            <img class="button__icon" src="/img/add.png"/>
+                        </a>
+                    </h2>
+                    <span th:if="${#lists.isEmpty(book.getReviews())}">
+                        Пусто, станьте первым, кто опубликует рецензию на эту книгу
+                    </span>
+                    <div class="reviews">
+                        <div class="comment-block" th:each="review : ${book.getReviews()}">
+                            <a class="link comment-block__author" th:text="${review.getReviewer().getUsername()}"
+                               th:href="@{/users/{username}(username=${review.getReviewer().getUsername()})}"></a>
+                            <div class="comment-block__inner">
+                                <h3 class="comment-block__header" th:text="${review.getHeader()}"></h3>
+                                <div class="comment-block__text" th:text="${review.getText()}"></div>
+                                <div class="comment-block__score" th:text="${'Оценка: ' + review.getScore()}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </body>
 </html>

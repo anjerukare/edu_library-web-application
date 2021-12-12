@@ -1,6 +1,7 @@
 package edu.mtp.Library.dao;
 
 import edu.mtp.Library.models.Book;
+import edu.mtp.Library.models.Review;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.simpleflatmapper.jdbc.spring.ResultSetExtractorImpl;
 import org.simpleflatmapper.jdbc.spring.SqlParameterSourceFactory;
@@ -25,13 +26,19 @@ public class BookDao {
                     .newInstance()
                     .addKeys("id", "authors_id", "authors_publisher_id", "authors_publisher_role_id",
                             "authors_moderator_id", "authors_moderator_role_id", "tags_id",
-                            "publisher_id", "publisher_role_id", "moderator_id", "moderator_role_id")
+                            "publisher_id", "publisher_role_id", "moderator_id", "moderator_role_id",
+                            "reviews_id", "reviews_book_id", "reviews_reviewer_id")
                     .newResultSetExtractor(Book.class);
 
     private final SqlParameterSourceFactory<Book> parameterFactory =
             JdbcTemplateMapperFactory
                     .newInstance()
                     .newSqlParameterSourceFactory(Book.class);
+
+    private final SqlParameterSourceFactory<Review> reviewParameterFactory =
+            JdbcTemplateMapperFactory
+                    .newInstance()
+                    .newSqlParameterSourceFactory(Review.class);
 
     @Value("${books.queries.get-all}")
     private String GET_ALL_QUERY;
@@ -66,11 +73,17 @@ public class BookDao {
     @Value("${books.queries.set-published}")
     private String SET_PUBLISHED_QUERY;
 
+    @Value("${books.queries.insert-review}")
+    private String INSERT_REVIEW_QUERY;
+
     @Value("${books.query-pieces.delete-book-form-favorites}")
-    private String DELETE_BOOK_FROM_FAVORITES_QUERY_PIECES;
+    private String DELETE_BOOK_FROM_FAVORITES_QUERY_PIECE;
 
     @Value("${books.query-pieces.delete-statuses-from-book}")
-    private String DELETE_STATUSES_FROM_BOOK_QUERY_PIECES;
+    private String DELETE_STATUSES_FROM_BOOK_QUERY_PIECE;
+
+    @Value("${books.query-pieces.delete-book-reviews}")
+    private String DELETE_BOOK_REVIEWS_QUERY_PIECE;
 
     @Value("${books.query-pieces.delete-book}")
     private String DELETE_BOOK_QUERY_PIECE;
@@ -141,11 +154,16 @@ public class BookDao {
         jdbcTemplate.update(SET_PUBLISHED_QUERY, parameterSource);
     }
 
+    public void addReview(Review review) {
+        jdbcTemplate.update(INSERT_REVIEW_QUERY, reviewParameterFactory.newSqlParameterSource(review));
+    }
+
     public void delete(int id) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_BOOK_FROM_FAVORITES_QUERY_PIECES +
-                DELETE_STATUSES_FROM_BOOK_QUERY_PIECES + DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE +
-                DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE, parameterSource);
+        jdbcTemplate.update(DELETE_BOOK_QUERY_PIECE + DELETE_BOOK_FROM_FAVORITES_QUERY_PIECE +
+                DELETE_STATUSES_FROM_BOOK_QUERY_PIECE + DELETE_BOOK_REVIEWS_QUERY_PIECE +
+                DELETE_JUNCTIONS_WITH_TAGS_QUERY_PIECE + DELETE_JUNCTIONS_WITH_AUTHORS_QUERY_PIECE,
+                parameterSource);
     }
 }

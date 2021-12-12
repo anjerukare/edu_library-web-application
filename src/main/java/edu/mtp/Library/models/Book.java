@@ -36,6 +36,8 @@ public class Book {
 
     private boolean published = false;
 
+    private List<Review> reviews = new ArrayList<>();
+
     /* Getters, setters, equals, hashCode and toString */
     public int getId() {
         return id;
@@ -125,17 +127,25 @@ public class Book {
         this.published = published;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return id == book.id && published == book.published && Objects.equals(name, book.name) && Objects.equals(authors, book.authors) && Objects.equals(tags, book.tags) && Objects.equals(annotation, book.annotation) && Objects.equals(coverUrl, book.coverUrl) && Objects.equals(bookUrl, book.bookUrl) && Objects.equals(publisher, book.publisher) && Objects.equals(createDate, book.createDate) && Objects.equals(moderator, book.moderator);
+        return id == book.id && published == book.published && Objects.equals(name, book.name) && Objects.equals(authors, book.authors) && Objects.equals(tags, book.tags) && Objects.equals(annotation, book.annotation) && Objects.equals(coverUrl, book.coverUrl) && Objects.equals(bookUrl, book.bookUrl) && Objects.equals(publisher, book.publisher) && Objects.equals(createDate, book.createDate) && Objects.equals(moderator, book.moderator) && Objects.equals(reviews, book.reviews);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, authors, tags, annotation, coverUrl, bookUrl, publisher, createDate, moderator, published);
+        return Objects.hash(id, name, authors, tags, annotation, coverUrl, bookUrl, publisher, createDate, moderator, published, reviews);
     }
 
     @Override
@@ -152,6 +162,7 @@ public class Book {
                 ", createDate=" + createDate +
                 ", moderator=" + moderator +
                 ", published=" + published +
+                ", reviews=" + reviews +
                 '}';
     }
 }

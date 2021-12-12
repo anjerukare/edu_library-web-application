@@ -2,6 +2,7 @@ package edu.mtp.Library.controllers;
 
 import edu.mtp.Library.dao.*;
 import edu.mtp.Library.models.Book;
+import edu.mtp.Library.models.Review;
 import edu.mtp.Library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -124,6 +125,27 @@ public class BookController {
 
         bookDao.add(book);
         return "redirect:/";
+    }
+
+    @GetMapping("/{id}/reviews/new")
+    @PreAuthorize("isAuthenticated()")
+    public String newReviewForBook(@PathVariable @ModelAttribute int id, @ModelAttribute Review review) {
+        return "books/reviews/new";
+    }
+
+    @PostMapping("/{id}/reviews")
+    @PreAuthorize("isAuthenticated()")
+    public String addReviewForBook(@PathVariable int id, @ModelAttribute @Valid Review review,
+                                   BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors())
+            return "books/reviews/new";
+
+        Book book = new Book();
+        book.setId(id);
+        review.setBook(book);
+        review.setReviewer(userDao.get(userDao.getIdByUsername(principal.getName())));
+        bookDao.addReview(review);
+        return "redirect:/books/{id}";
     }
 
     @GetMapping("/{id}/edit")
