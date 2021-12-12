@@ -32,8 +32,8 @@
                     </form>
                 </div>
             </section>
-            <section class="item-section">
-                <div class="item-section__inner">
+            <section class="section item-section">
+                <div class="section__inner">
                     <h2 class="item-section__title">
                         Книги
                         <a class="button button_icon button_secondary item-section__add-item" th:href="@{/books/new}"
@@ -66,8 +66,8 @@
                     </ul>
                 </div>
             </section>
-            <section class="item-section">
-                <div class="item-section__inner">
+            <section class="section item-section">
+                <div class="section__inner">
                     <h2 class="item-section__title">
                         Авторы
                         <a class="button button_icon button_secondary item-section__add-item" th:href="@{/authors/new}"
@@ -93,8 +93,36 @@
                     </ul>
                 </div>
             </section>
-            <section class="item-section">
-                <div class="item-section__inner">
+            <section class="section item-section">
+                <div class="section__inner">
+                    <h2 class="item-section__title">
+                        Обсуждения
+                        <a class="button button_icon button_secondary item-section__add-item" th:href="@{/topics/new}"
+                           sec:authorize="isAuthenticated()">
+                            <img class="button__icon" src="/img/add.png"/>
+                        </a>
+                    </h2>
+                    <ul class="catalog catalog_large-elements">
+                        <li class="card card_large" th:each="topic : ${topics}">
+                            <a class="link card__title" th:text="${topic.getName()}"
+                                  th:href="@{/topics/{id}(id=${topic.getId()})}"></a>
+                            <div class="card__description" th:text="${topic.getFirstReplyText()}"></div>
+                            <div class="card__footer">
+                                <a class="link topic__username" th:text="${topic.getCreator().getUsername()}"
+                                   th:href="@{/users/{username}(username=${topic.getCreator().getUsername()})}"></a>
+                                <span class="date topic__date" th:text="${topic.getDate()}"></span>
+                                <form th:method="delete" th:action="@{/topics/{id}(id=${topic.getId()})}"
+                                      sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <input class="link card__action" type="submit"
+                                           value="Удалить"/>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section class="section item-section">
+                <div class="section__inner">
                     <h2 class="item-section__title">
                         Пользователи
                     </h2>

@@ -15,8 +15,8 @@
         </header>
         <div class="header-separator" th:style="'background-position-y: -' + ${random % 1092} + 'px'"></div>
         <div class="body">
-            <section class="profile-section">
-                <div class="profile-section__inner">
+            <section class="section profile-section">
+                <div class="section__inner">
                     <div class="title-block">
                         <h2 class="title title-block__title profile-section__name" th:text="${user.getUsername()}"></h2>
                         <span class="role" th:text="${user.getRole().getName() == 'ROLE_READER' ? 'Читатель' : (

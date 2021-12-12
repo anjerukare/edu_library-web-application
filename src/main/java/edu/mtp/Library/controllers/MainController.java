@@ -2,6 +2,7 @@ package edu.mtp.Library.controllers;
 
 import edu.mtp.Library.dao.AuthorDao;
 import edu.mtp.Library.dao.BookDao;
+import edu.mtp.Library.dao.TopicDao;
 import edu.mtp.Library.dao.UserDao;
 import edu.mtp.Library.models.Author;
 import edu.mtp.Library.models.Book;
@@ -28,14 +29,16 @@ public class MainController {
 
     private final BookDao bookDao;
     private final AuthorDao authorDao;
+    private final TopicDao topicDao;
     private final UserDao userDao;
 
     private final static Random random = new Random();
 
     @Autowired
-    public MainController(BookDao bookDao, AuthorDao authorDao, UserDao userDao) {
+    public MainController(BookDao bookDao, AuthorDao authorDao, TopicDao topicDao, UserDao userDao) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
+        this.topicDao = topicDao;
         this.userDao = userDao;
     }
 
@@ -50,6 +53,7 @@ public class MainController {
         List<User> users = userDao.getAll();
         users.sort(Comparator.comparing(User::getUsername));
         model.addAttribute("users", users);
+        model.addAttribute("topics", topicDao.getAll());
         model.addAttribute("random", abs(random.nextInt()));
 
         return "index";

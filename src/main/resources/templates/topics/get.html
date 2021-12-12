@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${topic.getName()}"></title>
+        <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    </head>
+    <body class="page">
+        <header th:replace="fragments/header :: header">
+            /* Магия шаблонизатора */
+        </header>
+        <div class="header-separator" th:style="'background-position-y: -' + ${random % 1092} + 'px'"></div>
+        <div class="body">
+            <section class="section profile-section">
+                <div class="section__inner">
+                    <div class="title-block">
+                        <h2 class="title title-block__title profile-section__name" th:text="${topic.getName()}"></h2>
+                    </div>
+                    <div class="comment-block" th:each="reply : ${topic.getReplies()}">
+                        <a class="link comment-block__author" th:text="${reply.getCreator().getUsername()}"
+                           th:href="@{/users/{username}(username=${reply.getCreator().getUsername()})}"></a>
+                        <div class="comment-block__inner">
+                            <div class="comment-block__text" th:text="${reply.getText()}"></div>
+                            <div class="date comment-block__date" th:text="${reply.getDate()}"></div>
+                        </div>
+                    </div>
+                    <form class="add-reply-form" sec:authorize="isAuthenticated()" th:method="post"
+                          th:action="@{/topics/{id}(id=${topic.getId()})}"
+                          th:object="${topicReply}" novalidate>
+                        <div class="text-area text-area_cornered form__text-area"
+                             th:classappend="${#fields.hasErrors('text')? 'text-area_error' : ''}">
+                            <div class="text-area__inner">
+                                <div class="text-area__resize-handle">
+                                    <img class="text-area__resizer" src="/img/resizer.png"/>
+                                </div>
+                                <textarea class="text-area__field text-area__field_contains_button-clear"
+                                          placeholder="Ответить в обсуждение..."
+                                          th:field="*{text}" required></textarea>
+                                <button class="text-area__button-clear" type="button" tabindex="-1"
+                                        onclick="this.previousElementSibling.value = ''; this.blur()"></button>
+                            </div>
+                            <div class="error-label text-area__error-label" th:if="${#fields.hasErrors('text')}"
+                                 th:errors="*{text}"></div>
+                        </div>
+                        <input class="button add-book-form__action" type="submit" value="Отправить"/>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

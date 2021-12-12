@@ -202,6 +202,23 @@
     margin-right: 16px;
 }
 
+/* Блок комментария */
+.comment-block {
+    padding: 16px 0;
+}
+
+.comment-block__inner {
+    width: 512px;
+    padding: 16px 24px;
+    border-radius: 0 16px 16px 16px;
+    background: #EFF0F6;
+    margin-top: 16px;
+}
+
+.comment-block__date {
+    margin-top: 8px;
+}
+
 /* Триггер всплывающего окна */
 .popup-trigger {
     cursor: pointer;
@@ -436,6 +453,10 @@
     background: #EFF0F6;
     border-radius: 16px;
     padding: 2px 2px 2px 24px;
+}
+
+.text-area_cornered .text-area__inner {
+    border-top-left-radius: 0;
 }
 
 .text-area__inner:focus-within {
@@ -801,7 +822,7 @@
 /* Раздел с элементами */
 .item-section {}
 
-.item-section__inner {
+.section__inner {
     width: 1192px;
     margin: 0 auto;
     padding: 0 52px 48px;
@@ -827,6 +848,10 @@
     grid-template-columns: repeat(4, 236px);
     grid-column-gap: 48px;
     grid-row-gap: 48px;
+}
+
+.catalog_large-elements {
+    grid-template-columns: repeat(2, 520px);
 }
 
 /* Карточка книги */
@@ -950,6 +975,10 @@
     box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
 }
 
+.card_large {
+    width: 520px;
+}
+
 .card__title {
     font-weight: bold;
     display: block;
@@ -957,6 +986,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 18px;
+}
+
+.card__description {
+    display: -webkit-box;
+    height: 74px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 10px;
 }
 
 .card__actions {
@@ -975,6 +1013,11 @@
 
 .card__action:hover {
     color: #2A00A2;
+}
+
+.card__footer {
+    display: flex;
+    margin-top: 10px;
 }
 
 /* Раздел "Книга" */
@@ -1078,4 +1121,20 @@
 
 .response-popup {
     position: relative;
+}
+
+.date {
+    color: #6E7191;
+}
+
+.topic__username {
+    margin-right: 8px;
+}
+
+.topic__date {
+    margin-right: 16px;
+}
+
+.add-book-form__action {
+    margin-top: 16px;
 }
