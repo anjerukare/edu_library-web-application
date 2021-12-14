@@ -29,7 +29,7 @@ create table if not exists tags
     id serial
         constraint pk_tags
             primary key,
-    name varchar(16) not null,
+    name varchar(32) not null,
     description varchar(64)
 );
 
