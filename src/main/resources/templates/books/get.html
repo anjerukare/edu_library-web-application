@@ -126,5 +126,17 @@
                 </div>
             </section>
         </div>
+        <div class="response-popup" th:if="${response.getResult() != null}">
+            <input class="popup-checkbox" type="checkbox" id="response-popup" checked/>
+            <div class="popup form__popup"
+                 th:classappend="${response.getResult().name() == 'ERROR'} ?
+                                form\_\_popup_error : (${response.getResult().name() == 'SUCCESS'} ?
+                                form\_\_popup_success : '')">
+                <span class="popup__header" th:text="${response.getMessage()}"></span>
+                <label for="response-popup">
+                    <img class="icon popup__button-close" src="/img/close.png"/>
+                </label>
+            </div>
+        </div>
     </body>
 </html>

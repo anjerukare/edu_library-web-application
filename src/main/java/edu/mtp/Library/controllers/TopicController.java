@@ -4,11 +4,14 @@ import edu.mtp.Library.dao.TopicDao;
 import edu.mtp.Library.dao.UserDao;
 import edu.mtp.Library.models.Topic;
 import edu.mtp.Library.models.TopicReply;
+import edu.mtp.Library.util.Response;
+import edu.mtp.Library.util.Result;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -47,13 +50,15 @@ public class TopicController {
     @PreAuthorize("isAuthenticated()")
     public String addTopic(@ModelAttribute @Valid Topic topic, BindingResult topicBindingResult,
                            @ModelAttribute @Valid TopicReply reply, BindingResult replyBindingResult,
-                           Principal principal) {
+                           Principal principal, RedirectAttributes redirectAttributes) {
         if (topicBindingResult.hasErrors() || replyBindingResult.hasErrors()) {
             return "topics/new";
         }
 
         topic.setCreator(userDao.get(userDao.getIdByUsername(principal.getName())));
         topicDao.add(topic, reply.getText());
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Обсуждение успешно создано"));
         return "redirect:/";
     }
 
@@ -77,8 +82,10 @@ public class TopicController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteTopic(@PathVariable int id) {
+    public String deleteTopic(@PathVariable int id, RedirectAttributes redirectAttributes) {
         topicDao.delete(id);
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Обсуждение успешно удалено"));
         return "redirect:/";
     }
 }

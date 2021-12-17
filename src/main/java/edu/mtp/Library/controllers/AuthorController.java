@@ -44,7 +44,8 @@ public class AuthorController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public String addAuthor(@ModelAttribute @Valid Author author, BindingResult bindingResult,
-                            @CurrentSecurityContext SecurityContext securityContext) {
+                            @CurrentSecurityContext SecurityContext securityContext,
+                            RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors())
             return "authors/new";
 
@@ -56,6 +57,11 @@ public class AuthorController {
         if (hasAnyRole(authentication, "ROLE_MODERATOR", "ROLE_ADMIN")) {
             author.setModerator(publisher);
             author.setPublished(true);
+            redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                    "Автор успешно добавлен"));
+        } else {
+            redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                    "Заявка на добавление автора успешно создана"));
         }
 
         authorDao.add(author);
@@ -83,10 +89,13 @@ public class AuthorController {
 
     @PostMapping("/{id}/publish")
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
-    public String setAuthorPublished(@PathVariable int id, Principal principal) {
+    public String setAuthorPublished(@PathVariable int id, Principal principal,
+                                     RedirectAttributes redirectAttributes) {
         Integer moderatorId = userDao.getIdByUsername(principal.getName());
         authorDao.setPublished(id, moderatorId);
 
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Автор успешно добавлен в библиотеку"));
         return "redirect:/requests";
     }
 
@@ -100,6 +109,8 @@ public class AuthorController {
         }
 
         authorDao.delete(id);
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Автор успешно удалён"));
         return "redirect:/";
     }
 }

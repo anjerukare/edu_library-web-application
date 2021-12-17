@@ -3,6 +3,8 @@ package edu.mtp.Library.controllers;
 import edu.mtp.Library.dao.UserDao;
 import edu.mtp.Library.models.Role;
 import edu.mtp.Library.models.User;
+import edu.mtp.Library.util.Response;
+import edu.mtp.Library.util.Result;
 import edu.mtp.Library.util.UserReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -35,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/signin")
-    public String getSignInView() {
+    public String getSignInView(@ModelAttribute Response response) {
         return "users/signin";
     }
 
@@ -45,7 +48,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String register(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+    public String register(@ModelAttribute @Valid User user, BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
         if (userDao.isExists(user.getUsername()))
             bindingResult.rejectValue("username", "error.user",
                     "Пользователь с таким именем уже существует");
@@ -58,13 +62,16 @@ public class UserController {
         user.setRole(role);
 
         userDao.add(user);
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Пользователь успешно зарегистрирован"));
 
         return "redirect:/signin";
     }
 
     @GetMapping("/users/{username}")
     @PreAuthorize("isAuthenticated()")
-    public String getUserProfile(@PathVariable String username, Model model) {
+    public String getUserProfile(@PathVariable String username, Model model,
+                                 @ModelAttribute Response response) {
         model.addAttribute("user", userDao.get(userDao.getIdByUsername(username)));
         model.addAttribute("random", abs(random.nextInt()));
         return "users/profile";
@@ -80,12 +87,14 @@ public class UserController {
     @PatchMapping("/users/{username}")
     @PreAuthorize("authentication.principal.username == #username")
     public String setUser(@PathVariable String username, @ModelAttribute @Valid User user,
-                          BindingResult bindingResult) {
+                          BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors())
             return "users/edit";
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Пароль успешно изменён"));
         return "redirect:/users/{username}";
     }
 

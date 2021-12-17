@@ -4,6 +4,8 @@ import edu.mtp.Library.dao.*;
 import edu.mtp.Library.models.Book;
 import edu.mtp.Library.models.Review;
 import edu.mtp.Library.models.User;
+import edu.mtp.Library.util.Response;
+import edu.mtp.Library.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -48,7 +51,8 @@ public class BookController {
 
     @GetMapping("/{id}")
     public String getBook(@PathVariable int id, Model model,
-                          @CurrentSecurityContext SecurityContext securityContext) {
+                          @CurrentSecurityContext SecurityContext securityContext,
+                          @ModelAttribute Response response) {
         model.addAttribute("book", bookDao.get(id));
         model.addAttribute("random", abs(random.nextInt()));
 
@@ -88,10 +92,13 @@ public class BookController {
 
     @PostMapping("/{id}/publish")
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
-    public String setBookPublished(@PathVariable int id, Principal principal) {
+    public String setBookPublished(@PathVariable int id, Principal principal,
+                                   RedirectAttributes redirectAttributes) {
         Integer moderatorId = userDao.getIdByUsername(principal.getName());
         bookDao.setPublished(id, moderatorId);
 
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Книга успешно добавлена в библиотеку"));
         return "redirect:/requests";
     }
 
@@ -106,7 +113,8 @@ public class BookController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public String addBook(@ModelAttribute @Valid Book book, BindingResult bindingResult,
-                          Model model, @CurrentSecurityContext SecurityContext securityContext) {
+                          Model model, @CurrentSecurityContext SecurityContext securityContext,
+                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("allAuthors", authorDao.getAll());
             model.addAttribute("allTags", tagDao.getAll());
@@ -121,6 +129,11 @@ public class BookController {
         if (hasAnyRole(authentication, "ROLE_MODERATOR", "ROLE_ADMIN")) {
             book.setModerator(publisher);
             book.setPublished(true);
+            redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                    "Книга успешно добавлена"));
+        } else {
+            redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                    "Заявка на добавление книги успешно создана"));
         }
 
         bookDao.add(book);
@@ -161,7 +174,7 @@ public class BookController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String setBook(@ModelAttribute @Valid Book book, BindingResult bindingResult,
-                          Model model) {
+                          Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("allAuthors", authorDao.getAll());
             model.addAttribute("allTags", tagDao.getAll());
@@ -169,13 +182,17 @@ public class BookController {
         }
 
         bookDao.save(book);
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Изменения в книгу успешно внесены"));
         return "redirect:/books/{id}";
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
-    public String deleteBook(@PathVariable int id) {
+    public String deleteBook(@PathVariable int id, RedirectAttributes redirectAttributes) {
         bookDao.delete(id);
+        redirectAttributes.addFlashAttribute(new Response(Result.SUCCESS,
+                "Книга успешно удалена"));
         return "redirect:/";
     }
 }

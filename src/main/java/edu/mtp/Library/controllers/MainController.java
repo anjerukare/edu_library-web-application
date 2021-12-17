@@ -76,7 +76,7 @@ public class MainController {
 
     @GetMapping("/requests")
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
-    public String getRequests(Model model) {
+    public String getRequests(Model model, @ModelAttribute Response response) {
         model.addAttribute("books", bookDao.getAll(false));
         model.addAttribute("authors", authorDao.getAll(false));
         model.addAttribute("random", abs(random.nextInt()));
