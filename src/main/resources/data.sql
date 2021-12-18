@@ -3,6 +3,7 @@ insert into roles (id, name) values (2, 'ROLE_MODERATOR') on conflict do nothing
 insert into roles (id, name) values (3, 'ROLE_READER') on conflict do nothing;
 
 insert into users (id, username, password, roleid) values (1, 'admin', '$2a$12$T3Nt5hkH54agvABcq1zPnuIEfOBFLxkp1YwdYMULPvM7EEnfAObrS', 1) on conflict do nothing;
+select setval('users_id_seq', (select max(id) from users));
 
 insert into public.tags (id, name, description) values (1, 'Роман-эпопея', 'Масштабный исторических и социальный фон, яркие персонажи') on conflict do nothing;
 insert into public.tags (id, name, description) values (2, 'Роман', 'Повествование о жизни и развитии личности главного героя') on conflict do nothing;
