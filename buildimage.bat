@@ -1,1 +1,1 @@
-mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=anjerukare/library
+mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=anjerukare/library -Dmaven.test.skip
